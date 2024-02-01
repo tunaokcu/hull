@@ -1,0 +1,11 @@
+1) Algorithms: 4 of them
+2) The ability to switch between algorithms
+3) The option to pause and unpause algorithm execution
+4) The ability to zoom in and out
+5) The abilty to
+6) The ability to generate points according to 
+    a) Gaussian distribution
+    b) Uniform distribution
+7) The ability to add new points
+8) The ability to turn on algorithm animation 
+9) 
