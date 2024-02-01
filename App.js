@@ -35,9 +35,10 @@ export default class App{
         this.animationDelay *= 10
     }
 
+    lastFrame
     animation(frameIndex=0){
         if (!this.animated){  this.handleSkipforward();       return; } //we went back to responsive mode
-
+        if (!this.animationPlaying) { this.lastFrame = frameIndex; return; }
 
         //Animation ran to completion. Call the hull render function and return
         if (this.frames.length - 1 == frameIndex){
@@ -95,6 +96,8 @@ export default class App{
 
         if (this.animationPlaying){
             this.animation();
+        } else {
+            requestAnimationFrame(() =>this.animation(this.lastFrame))
         }
     }
 

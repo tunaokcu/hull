@@ -2,10 +2,11 @@
 float: left;         /* This causes the content to move to the left 
                         It's going to appear to the left of the content because 
                         we declared it first in our HTML page */
-width: 400px;        /* We need to set the width whenever we float an element */
+width: 800px;        /* We need to set the width whenever we float an element */
 }
 
 .sidebar-one {
 float: left;         /* This causes the sidebar to move to the left */
 width: 400px;        /* We need to set the width whenever we float an element */
 }
+
