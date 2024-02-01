@@ -29,53 +29,62 @@ function orientation(p, q, r)
 function convexHull(points, n) 
 { 
     points = points.map((point) => new Point(point[0], point[1]));
+    let state = [];
+
+    
     // There must be at least 3 points 
-        if (n < 3) return; 
-         
-        // Initialize Result 
-        let hull = []; 
+    if (n < 3) return; 
+        
+    // Initialize Result 
+    let hull = []; 
+    let curHull = [];
 
-        // Find the leftmost point 
-        let l = 0; 
-        for (let i = 1; i < n; i++) 
-            if (points[i].x < points[l].x) 
-                l = i; 
-         
-        // Start from leftmost point, keep moving  
-        // counterclockwise until reach the start point 
-        // again. This loop runs O(h) times where h is 
-        // number of points in result or output. 
-        let p = l, q; 
-        do
+    // Find the leftmost point 
+    let l = 0; 
+    for (let i = 1; i < n; i++) 
+        if (points[i].x < points[l].x) 
+            l = i; 
+        
+    // Start from leftmost point, keep moving  
+    // counterclockwise until reach the start point 
+    // again. This loop runs O(h) times where h is 
+    // number of points in result or output. 
+    let p = l, q; 
+    do
+    { 
+        curHull.push(points[p]);
+        state.push(curHull.map((point) => [point.x, point.y]))
+        // Add current point to result 
+        hull.push(points[p]); 
+        
+        // Search for a point 'q' such that  
+        // orientation(p, q, x) is counterclockwise  
+        // for all points 'x'. The idea is to keep  
+        // track of last visited most counterclock- 
+        // wise point in q. If any point 'i' is more  
+        // counterclock-wise than q, then update q. 
+        q = (p + 1) % n; 
+            
+        for (let i = 0; i < n; i++) 
         { 
-          
-            // Add current point to result 
-            hull.push(points[p]); 
-         
-            // Search for a point 'q' such that  
-            // orientation(p, q, x) is counterclockwise  
-            // for all points 'x'. The idea is to keep  
-            // track of last visited most counterclock- 
-            // wise point in q. If any point 'i' is more  
-            // counterclock-wise than q, then update q. 
-            q = (p + 1) % n; 
-                
-            for (let i = 0; i < n; i++) 
-            { 
-               // If i is more counterclockwise than  
-               // current q, then update q 
-               if (orientation(points[p], points[i], points[q]) 
-                                                   == 2) 
-                   q = i; 
-            } 
-         
-            // Now q is the most counterclockwise with 
-            // respect to p. Set p as q for next iteration,  
-            // so that q is added to result 'hull' 
-            p = q; 
-         
-        } while (p != l);  // While we don't come to first  
-                           // point 
+            curHull.push(points[i])
 
-        return hull.map((point) => [point.x, point.y]) 
+            state.push(curHull.map((point) => [point.x, point.y]))
+            curHull.pop();
+            // If i is more counterclockwise than  
+            // current q, then update q 
+            if (orientation(points[p], points[i], points[q]) 
+                                                == 2) 
+                q = i; 
+        } 
+        
+        // Now q is the most counterclockwise with 
+        // respect to p. Set p as q for next iteration,  
+        // so that q is added to result 'hull' 
+        p = q; 
+        
+    } while (p != l);  // While we don't come to first  
+                        // point 
+
+    return [hull.map((point) => [point.x, point.y]), state];
 } 

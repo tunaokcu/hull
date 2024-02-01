@@ -20,11 +20,9 @@ window.onload = () => {
     //Zoom handler
     document.addEventListener("wheel", (event) => zoomHandler(event, APP), {passive: false}); //the {passive: false} part is necessary for the zoomHandler to prevent default action
     
-    //Button
-    document.getElementById("findHull").addEventListener("click", () => APP.findHull());
-    document.getElementById("generateGaussian").addEventListener("click", () => APP.generateGaussian());
-
 }
+
+
 
 function mousedownHandler(event, app){
     let clipCoords = clientToClip(event);

@@ -10,6 +10,8 @@ export default class Graphical{
     TRIAL_LINE_COLOR  = [0, 0, 1, 1];
     FINAL_LINE_COLOR =  [1, 0, 0, 1];
     DOT_COLOR = [0, 1, 0, 1];
+    DRAGGED_POINT_COLOR = [190/255.0,111/255.0,234/255.0, 1]
+
 
     BACKGROUND_COLOR = [0.8, 0.8, 0.8, 1.0]
     
@@ -65,64 +67,80 @@ export default class Graphical{
 
     }
 
-    drawTrialLine(start, finish){
-
-    }
-    
-    drawFinalLine(start, finish){
-
-    }
-
-    eraseLastPoint(){
-        this.points.pop();
-        this.points.pop();
-    }
-    
-    drawPoints(pointArray){
-        //Add points to points array
-        this.points = this.points.concat(...pointArray)
-
-    }
-
-    render(){  
+    //Points is a 2D array of points, dragged point is a single point array, incompleteLine is an array of exactly 2 points, completeLines is an array of 
+    render(points=[], draggedPoint=[], incompleteLine=[], completeLines=[], coordinateSystemOn){  
+        //Clear screen
         this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+
+        //Draw coordinate system if it is on
+        if (coordinateSystemOn){
+            this.drawCoordinateSystem();
+        }
 
         let count;
 
-        //Draw points and lines
-        
-        if (this.points.length != 0){
+
+
+        //Draw draggedPoint
+        if (draggedPoint.length != 0){
             //Buffer the vertices
             this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this.vertexBuffer );
-            this.gl.bufferData( this.gl.ARRAY_BUFFER, flatten(this.points), this.gl.STATIC_DRAW);
+            this.gl.bufferData( this.gl.ARRAY_BUFFER, flatten(draggedPoint), this.gl.STATIC_DRAW);
             
             //Buffer the color
             this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this.colorBuffer );
-            this.gl.bufferData( this.gl.ARRAY_BUFFER, flatten([].concat(...Array(this.points.length/2).fill(this.DOT_COLOR))), this.gl.STATIC_DRAW);
+            this.gl.bufferData( this.gl.ARRAY_BUFFER, (flatten(this.DRAGGED_POINT_COLOR)), this.gl.STATIC_DRAW);
             
-            count = this.points.length / 2;
-
+            //Draw
+            this.gl.drawArrays(this.gl.POINTS, 0, 1);
+        }
+        //Draw incompleteLine
+        if (incompleteLine.length != 0){
+            if (incompleteLine[0].length != 2) {  throw Error("Line should consist of two points")}
+            //Buffer the vertices
+            this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this.vertexBuffer );
+            this.gl.bufferData( this.gl.ARRAY_BUFFER, flatten(incompleteLine), this.gl.STATIC_DRAW);
+            
+            //Buffer the color
+            this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this.colorBuffer );
+            this.gl.bufferData( this.gl.ARRAY_BUFFER, (flatten(this.TRIAL_LINE_COLOR.concat(this.TRIAL_LINE_COLOR))), this.gl.STATIC_DRAW);
+            
+            //Draw
+            this.gl.drawArrays(this.gl.LINES, 0, 2);
+        }
+        //Draw points and lines
+        if (points.length != 0){
+            //Buffer the vertices
+            this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this.vertexBuffer );
+            this.gl.bufferData( this.gl.ARRAY_BUFFER, flatten(points), this.gl.STATIC_DRAW);
+            
+            //Buffer the color
+            this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this.colorBuffer );
+            this.gl.bufferData( this.gl.ARRAY_BUFFER, flatten([].concat(...Array(points.length).fill(this.DOT_COLOR))), this.gl.STATIC_DRAW);
+            
+            count = points.length;
 
             //Draw
             this.gl.drawArrays(this.gl.POINTS, 0, count);
         
         }
-        if (this.lines.length != 0){
+        if (completeLines.length != 0){
             //Buffer the vertices
             this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this.vertexBuffer );
-            this.gl.bufferData( this.gl.ARRAY_BUFFER, flatten(this.lines), this.gl.STATIC_DRAW);
+            this.gl.bufferData( this.gl.ARRAY_BUFFER, flatten(completeLines), this.gl.STATIC_DRAW);
             
 
             //Buffer the color
             this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this.colorBuffer );
-            this.gl.bufferData( this.gl.ARRAY_BUFFER, flatten([].concat(...Array(this.points.length/2).fill(this.FINAL_LINE_COLOR))), this.gl.STATIC_DRAW);
+            this.gl.bufferData( this.gl.ARRAY_BUFFER, flatten([].concat(...Array(completeLines.length).fill(this.FINAL_LINE_COLOR))), this.gl.STATIC_DRAW);
 
-            count = this.lines.length/2;
+            count = completeLines.length;
 
             //Draw
             this.gl.drawArrays(this.gl.LINE_LOOP, 0, count);
             
         }
+        
     }
 
     drawHull(hullLines){

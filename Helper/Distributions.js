@@ -14,7 +14,7 @@ function generatePointsGuassian(n, range) {
     return points;
 }
 
-//TODO rewrite
+//TODO understand and rewrite
 //CREDIT: https://stackoverflow.com/questions/25582882/javascript-math-random-normal-distribution-gaussian-bell-curve
 function generateGaussian(min, max, skew) {
     let u = 0, v = 0;
@@ -38,10 +38,9 @@ function generatePointsUniform(n, range){
 
     for (let i = 0; i < n; i ++){
         points.push([])
-        points[i].push(Math.floor(Math.random() * 2 * range) -range)
-        points[i].push(Math.floor(Math.random() * 2 * range) -range)
+        points[i].push((Math.random() * 2 * range) -range)
+        points[i].push((Math.random() * 2 * range) -range)
     }
-
     return points;
 }
 

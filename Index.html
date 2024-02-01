@@ -2,6 +2,9 @@
 <html>
 
 <head>
+  <link rel="stylesheet" href="styles.css">
+
+
   <script id="vertex-shader" type="x-shader/x-vertex">
     attribute vec2 vPosition;
 
@@ -33,9 +36,23 @@
 
 </head>
 <body>
-  <canvas id="gl-canvas" width="400" height="400"></canvas>
-  <button id="findHull">Find hull</button>
-<button id="generateGaussian">Generate Gaussian</button>
+  <div class="content">
+    <canvas id="gl-canvas" width="400" height="400"></canvas>
+  </div>
+  <div class="sidebar-one">
+    <button id="startAnimation">Animate</button>
+    <button id="continueAnimation" style="display:none">Continue</button>
+    <button id="pauseAnimation" style="display:none">Pause</button>
+    <button id="skipForward" style="display:none">Skip</button>
+    <<button id="+speed" style="display:none">+Speed</button>
+    <button id="-speed" style="display:none">-Speed</button>
+    
+    <br>
+    <button id="generateGaussian">Generate Gaussian</button>
+    <button id="generateUniform">Generate Uniform</button>
+    <button id="clear">Clear Screen</button>
+  </div>
+
 
 </body>
 </html>
