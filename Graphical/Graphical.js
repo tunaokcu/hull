@@ -55,7 +55,7 @@ export default class Graphical{
         this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 
 
-        //Unflattened arrays
+        //1D unflattened arrays
         this.points = []; 
         this.lines = []; 
         this.colors = [];
@@ -73,6 +73,11 @@ export default class Graphical{
 
     }
 
+    eraseLastPoint(){
+        this.points.pop();
+        this.points.pop();
+    }
+    
     drawPoints(pointArray){
         //Add points to points array
         this.points = this.points.concat(...pointArray)

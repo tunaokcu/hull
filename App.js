@@ -34,6 +34,16 @@ export default class App{
         //TODO the rest
     }
 
+    replaceLastPoint(point){
+        //Pop last point
+        this.points.pop();
+        this.graphical.eraseLastPoint();
+
+        //Everything else is standard
+        this.addPoints([point]);
+        
+    }
+
     //Input is an array of points. Each point is a 2D array of xy coordinates.
     addPoints(points){
         this.points = this.points.concat(points);
@@ -44,6 +54,7 @@ export default class App{
             this.graphical.drawHull(hull)
         }
 
+        console.log("here")
         this.graphical.render();
 
     }
@@ -60,16 +71,36 @@ export default class App{
         this.addPoints(generatePointsGuassian(1000, 1));
     }
 
-    mousedownHandler(event, canvasCoords){
+    mousedown = false;
 
+    mousedownHandler(event, clipCoords){
+        switch(this.tool){ 
+            case "pen":
+                this.addPoints([clipCoords])
+                this.mousedown = true;
+                break;
+            case "cursor":
+
+                break;
+        }
     }
-    mousemoveHandler(event, canvasCoords){
+    mousemoveHandler(event, clipCoords){
+        switch(this.tool){ 
+            case "pen":
+                if (this.mousedown){
+                    this.replaceLastPoint(clipCoords)
+                }
+                break;
+            case "cursor":
 
+                break;
+        }
     }
     mouseupHandler(event, clipCoords){
         switch(this.tool){ 
             case "pen":
                 this.addPoints([clipCoords])
+                this.mousedown = false;
                 break;
             case "cursor":
 
