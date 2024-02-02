@@ -53,8 +53,8 @@ export default class App{
     }
 
     animationRender(frame){
-        //Set points as every point except for the last one
-        let points = frame.slice(0, -1);
+        //Draw every point on screen
+        let points = arrayifySet(this.points);
 
         //Set current point as that last point
         let currentPoint = frame[frame.length - 1];

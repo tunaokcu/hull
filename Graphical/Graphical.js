@@ -81,33 +81,6 @@ export default class Graphical{
 
 
 
-        //Draw draggedPoint
-        if (draggedPoint.length != 0){
-            //Buffer the vertices
-            this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this.vertexBuffer );
-            this.gl.bufferData( this.gl.ARRAY_BUFFER, flatten(draggedPoint), this.gl.STATIC_DRAW);
-            
-            //Buffer the color
-            this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this.colorBuffer );
-            this.gl.bufferData( this.gl.ARRAY_BUFFER, (flatten(this.DRAGGED_POINT_COLOR)), this.gl.STATIC_DRAW);
-            
-            //Draw
-            this.gl.drawArrays(this.gl.POINTS, 0, 1);
-        }
-        //Draw incompleteLine
-        if (incompleteLine.length != 0){
-            if (incompleteLine[0].length != 2) {  throw Error("Line should consist of two points")}
-            //Buffer the vertices
-            this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this.vertexBuffer );
-            this.gl.bufferData( this.gl.ARRAY_BUFFER, flatten(incompleteLine), this.gl.STATIC_DRAW);
-            
-            //Buffer the color
-            this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this.colorBuffer );
-            this.gl.bufferData( this.gl.ARRAY_BUFFER, (flatten(this.TRIAL_LINE_COLOR.concat(this.TRIAL_LINE_COLOR))), this.gl.STATIC_DRAW);
-            
-            //Draw
-            this.gl.drawArrays(this.gl.LINES, 0, 2);
-        }
         //Draw points and lines
         if (points.length != 0){
             //Buffer the vertices
@@ -141,6 +114,33 @@ export default class Graphical{
             
         }
         
+        //Draw draggedPoint
+        if (draggedPoint.length != 0){
+            //Buffer the vertices
+            this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this.vertexBuffer );
+            this.gl.bufferData( this.gl.ARRAY_BUFFER, flatten(draggedPoint), this.gl.STATIC_DRAW);
+            
+            //Buffer the color
+            this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this.colorBuffer );
+            this.gl.bufferData( this.gl.ARRAY_BUFFER, (flatten(this.DRAGGED_POINT_COLOR)), this.gl.STATIC_DRAW);
+            
+            //Draw
+            this.gl.drawArrays(this.gl.POINTS, 0, 1);
+        }
+        //Draw incompleteLine
+        if (incompleteLine.length != 0){
+            if (incompleteLine[0].length != 2) {  throw Error("Line should consist of two points")}
+            //Buffer the vertices
+            this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this.vertexBuffer );
+            this.gl.bufferData( this.gl.ARRAY_BUFFER, flatten(incompleteLine), this.gl.STATIC_DRAW);
+            
+            //Buffer the color
+            this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this.colorBuffer );
+            this.gl.bufferData( this.gl.ARRAY_BUFFER, (flatten(this.TRIAL_LINE_COLOR.concat(this.TRIAL_LINE_COLOR))), this.gl.STATIC_DRAW);
+            
+            //Draw
+            this.gl.drawArrays(this.gl.LINES, 0, 2);
+        }
     }
 
     drawHull(hullLines){
