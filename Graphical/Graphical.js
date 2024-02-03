@@ -11,6 +11,7 @@ export default class Graphical{
     FINAL_LINE_COLOR =  [1, 0, 0, 1];
     DOT_COLOR = [0, 1, 0, 1];
     DRAGGED_POINT_COLOR = [190/255.0,111/255.0,234/255.0, 1]
+    COORDINATE_COLOR = [0, 0, 0, 1];
 
 
     BACKGROUND_COLOR = [0.8, 0.8, 0.8, 1.0]
@@ -64,6 +65,50 @@ export default class Graphical{
     }
 
     drawCoordinateSystem(){
+            //Draw the lines
+        let range = 0.8;
+
+        let xLine = [[-range, 0], [range, 0]];
+        let yLine = [[0, -range], [0, range]];
+        let lines = [...xLine, ...yLine]
+
+        let count = lines.length;
+
+        //Buffer the vertices
+        this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this.vertexBuffer );
+        this.gl.bufferData( this.gl.ARRAY_BUFFER, flatten(lines), this.gl.STATIC_DRAW);
+        
+        //Buffer the color
+        this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this.colorBuffer );
+        this.gl.bufferData( this.gl.ARRAY_BUFFER, flatten([].concat(...Array(count).fill(this.COORDINATE_COLOR))), this.gl.STATIC_DRAW);
+        
+
+        //Draw
+        this.gl.drawArrays(this.gl.LINES, 0, count);
+
+
+            //Draw the triangles
+        let len = 0.01;
+        let right = [[range, len], [range, -len], [range + 3*len, 0]]
+        let left = [[-range, -len], [-range, len], [-range - 3*len, 0]]
+        let up = [[len, range], [-len, range], [0, range + 3*len]]
+        let down = [[-len, -range], [len, -range], [0, -range -3*len]]
+
+
+        let triangles = [...right, ...left, ...up, ...down];
+        count = triangles.length;
+        
+        //Buffer the vertices
+        this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this.vertexBuffer );
+        this.gl.bufferData( this.gl.ARRAY_BUFFER, flatten(triangles), this.gl.STATIC_DRAW);
+        
+        //Buffer the color
+        this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this.colorBuffer );
+        this.gl.bufferData( this.gl.ARRAY_BUFFER, flatten([].concat(...Array(count).fill(this.COORDINATE_COLOR))), this.gl.STATIC_DRAW);
+        
+
+        //Draw
+        this.gl.drawArrays(this.gl.TRIANGLES, 0, count);
 
     }
 

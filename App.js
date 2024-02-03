@@ -23,6 +23,8 @@ export default class App{
         this.tool = "pen";
 
         this.initUI();
+
+        this.graphical.drawCoordinateSystem();
     }
 
     animationDelay = 10;
@@ -175,7 +177,7 @@ export default class App{
     mousedown = false;
     currentPoint = [];
     incompleteLine = [];
-    coordinateSystemOn;
+    coordinateSystemOn = true;
     mousedownHandler(event, clipCoords){
         switch(this.tool){ 
             case "pen":

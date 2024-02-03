@@ -34,7 +34,8 @@ function mousemoveHandler(event, app){
     let clipCoords = clientToClip(event);
     if (clipCoords){
         app.mousemoveHandler(event, clipCoords);
-    }}
+    }
+}
 function mouseupHandler(event, app){
     let clipCoords = clientToClip(event);
     if (clipCoords){
@@ -47,12 +48,13 @@ function zoomHandler(event){
         event.preventDefault();
 
         let direction = event.deltaY < 0 ? "up" : "down";
+        /*
         if (direction === "up"){
             LOGICAL_DISPLAY.zoomIn();
         }
         else{
             LOGICAL_DISPLAY.zoomOut();
-        }
+        }*/
     }
 }
 
@@ -67,9 +69,9 @@ function clientToCanvas(event){
     let res = [event.clientX - currentCanvasCoords.left, event.clientY - currentCanvasCoords.top]; 
 
     //Quick fix: it seems that we encounter this issue only when we click just outside the edge anyways, so this fix should work
-    if (res[0] < 0 || res[1] < 0 || res[0] > CANVAS_WIDTH || res[1] > CANVAS_HEIGHT){
+    /*if (res[0] < 0 || res[1] < 0 || res[0] > CANVAS_WIDTH || res[1] > CANVAS_HEIGHT){
         return null;
-    }
+    }*/
     return res;
 }
 
