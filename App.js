@@ -38,9 +38,10 @@ export default class App{
     }
 
     lastFrame
-    animation(frameIndex=0){
+    animation(frameIndex=0){ 
+        this.lastFrame = frameIndex > 0 ? frameIndex-1 : 0; 
         if (!this.animated){  this.handleSkipforward();       return; } //we went back to responsive mode
-        if (!this.animationPlaying) { this.lastFrame = frameIndex; return; }
+        if (!this.animationPlaying) {        return}// this.lastFrame = frameIndex;            return; }
 
         //Animation ran to completion. Call the hull render function and return
         if (this.frames.length - 1 == frameIndex){
@@ -178,7 +179,16 @@ export default class App{
     currentPoint = [];
     incompleteLine = [];
     coordinateSystemOn = true;
+    lastMousePosition;
+
+    calcDotPlacement(clipCoords){
+        return  [clipCoords[0]/this.graphical.camera.currentZoom - this.graphical.camera.offsetX, clipCoords[1]/this.graphical.camera.currentZoom - this.graphical.camera.offsetY];
+    }
+
     mousedownHandler(event, clipCoords){
+        let clipCoordsOriginal = clipCoords;
+        clipCoords = this.calcDotPlacement(clipCoords);
+
         switch(this.tool){ 
             case "pen":
                 this.currentPoint = clipCoords
@@ -186,14 +196,17 @@ export default class App{
                 this.render();
                 break;
             case "cursor":
-
                 break;
         }
         this.mousedown = true;
+        this.lastMousePosition = clipCoordsOriginal;
 
     }
 
     mousemoveHandler(event, clipCoords){
+        let clipCoordsOriginal = clipCoords;
+        clipCoords = this.calcDotPlacement(clipCoords);
+
         switch(this.tool){ 
             case "pen":
                 if (this.mousedown){
@@ -203,24 +216,55 @@ export default class App{
                 }
                 break;
             case "cursor":
-
+                if (this.mousedown){
+                    let curMousePosition = clipCoordsOriginal;
+                    let moveVector = [curMousePosition[0] - this.lastMousePosition[0], curMousePosition[1] - this.lastMousePosition[1]]
+                    this.graphical.camera.move(this.graphical.gl, moveVector);
+                    if (!this.animationPlaying){
+                        if (this.animated) { this.animationRender(this.frames[this.lastFrame]) }
+                        else { this.render() };
+                    }
+                }
                 break;
         }
+        this.lastMousePosition = clipCoordsOriginal;
+
     }
     mouseupHandler(event, clipCoords){
+        let clipCoordsOriginal = clipCoords;
+        clipCoords = this.calcDotPlacement(clipCoords);
+
         switch(this.tool){ 
             case "pen":
                 this.currentPoint = [];
 
                 this.addPoints([clipCoords])
                 this.calculateHull();
-                this.render();
+                //this.render();
                 break;
             case "cursor":
-
+                if (!this.animationPlaying){
+                    if (this.animated) { this.animationRender(this.frames[this.lastFrame]) }
+                    else { this.render() };
+                }
                 break;
         }
         this.mousedown = false;
+        this.lastMousePosition = clipCoordsOriginal;
+
+    }
+
+    zoomIn(){
+        this.graphical.camera.zoomIn(this.graphical.gl); 
+        if (!this.animationPlaying){ 
+            this.render()
+        }
+    }
+    zoomOut(){
+        this.graphical.camera.zoomOut(this.graphical.gl); 
+        if (!this.animationPlaying){
+            this.render();
+        }
     }
 
     clearScreen(){

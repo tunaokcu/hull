@@ -7,7 +7,8 @@
 
   <script id="vertex-shader" type="x-shader/x-vertex">
     attribute vec2 vPosition;
-
+    uniform mat4 modelViewMatrix;
+    uniform mat4 projectionMatrix;
 
     attribute vec4 vColor;
     
@@ -15,7 +16,7 @@
     
     void main()
     {
-        gl_Position = vec4(vPosition, 0, 1);//projectionMatrix*modelViewMatrix*vPosition;
+        gl_Position = projectionMatrix*modelViewMatrix*vec4(vPosition, 0, 1);
         fColor = vColor;
         gl_PointSize = 10.0;
     }

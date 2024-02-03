@@ -42,19 +42,18 @@ function mouseupHandler(event, app){
         app.mouseupHandler(event, clipCoords);
     }}
 
-//let intialMeasurement = 0;
-function zoomHandler(event){
+function zoomHandler(event, app){
     if (event.ctrlKey && event.deltaY != 0){
         event.preventDefault();
 
         let direction = event.deltaY < 0 ? "up" : "down";
-        /*
+
         if (direction === "up"){
-            LOGICAL_DISPLAY.zoomIn();
+            app.zoomIn();
         }
         else{
-            LOGICAL_DISPLAY.zoomOut();
-        }*/
+            app.zoomOut();
+        }
     }
 }
 

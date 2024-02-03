@@ -51,7 +51,8 @@ export default class Graphical{
         this.gl.enableVertexAttribArray( this.vColor );
 
         //Set camera up
-        //this.camera = new Camera(this.gl, this.program, -10, 10, 6, 0, 0.0,  -30.0, 30.0, 30.0, -30.0, vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0))
+        //constructor(gl, program, near=-10, far=10, radius=6, theta=0, phi=0.0,  left=-0.5, right=0.5, ytop=0.5, bottom=-0.5, at=vec3(0.0, 0.0, 0.0), up=vec3(0.0, 1.0, 0.0)){
+        this.camera = new Camera(this.gl, this.program, -10, 10, 6, 0, 0.0,  -1.0, 1.0, 1.0, -1.0, vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0))
 
         //Render offset
         //this.offset = 0;
@@ -65,7 +66,8 @@ export default class Graphical{
     }
 
     drawCoordinateSystem(){
-            //Draw the lines
+        this.camera.keepObjectSizeConstant(this.gl);
+        //Draw the lines
         let range = 0.8;
 
         let xLine = [[-range, 0], [range, 0]];
@@ -125,7 +127,7 @@ export default class Graphical{
         let count;
 
 
-
+        this.camera.setMV(this.gl);
         //Draw points and lines
         if (points.length != 0){
             //Buffer the vertices
