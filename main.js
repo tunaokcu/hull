@@ -19,7 +19,12 @@ window.onload = () => {
 
     //Zoom handler
     document.addEventListener("wheel", (event) => zoomHandler(event, APP), {passive: false}); //the {passive: false} part is necessary for the zoomHandler to prevent default action
-    
+    document.addEventListener("keyup", (e) => {
+        if (e.keyCode == 65){
+            console.log("here")
+            APP.handleStartAnimation()
+        }
+    }, false);
 }
 
 

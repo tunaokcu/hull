@@ -27,7 +27,7 @@ export default class App{
         this.graphical.drawCoordinateSystem();
     }
 
-    animationDelay = 10;
+    animationDelay = 1000;
     increaseAnimationSpeed(){
         if (this.animationDelay > 10){
             this.animationDelay /= 10
@@ -221,7 +221,7 @@ export default class App{
                     let moveVector = [curMousePosition[0] - this.lastMousePosition[0], curMousePosition[1] - this.lastMousePosition[1]]
                     this.graphical.camera.move(this.graphical.gl, moveVector);
                     if (!this.animationPlaying){
-                        if (this.animated) { this.animationRender(this.frames[this.lastFrame]) }
+                        if (this.animated && this.frames) { this.animationRender(this.frames[this.lastFrame]) }
                         else { this.render() };
                     }
                 }
@@ -244,7 +244,7 @@ export default class App{
                 break;
             case "cursor":
                 if (!this.animationPlaying){
-                    if (this.animated) { this.animationRender(this.frames[this.lastFrame]) }
+                    if (this.animated && this.frames) { this.animationRender(this.frames[this.lastFrame]) }
                     else { this.render() };
                 }
                 break;
