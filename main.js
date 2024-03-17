@@ -1,9 +1,34 @@
-import App from "./App.js";
+const { app, BrowserWindow } = require("electron");
+const path = require("path");
+const App = require("./App.js");
 
 let currentCanvasCoords;
 let CANVAS_WIDTH, CANVAS_HEIGHT;
 
-window.onload = () => {
+
+const WINDOW_WIDTH = 900;
+const WINDOW_HEIGHT = 900;
+const INDEX_FILE_PATH = "Index.html";
+
+const createWindow = () => {
+    const window = new BrowserWindow({
+        width: WINDOW_WIDTH,
+        height: WINDOW_HEIGHT,
+        webPreferences: {
+            nodeIntegration: true,
+        }
+    });
+
+    window.loadFile(INDEX_FILE_PATH);
+
+    setup();
+}
+
+app.whenReady().then(() => {
+    createWindow()
+})
+
+const setup = () => {
     const APP = new App();
 
     CANVAS_WIDTH = document.getElementById("gl-canvas").width;

@@ -1,5 +1,5 @@
 
-export default function quickhull(a,n)
+module.exports =  function quickhull(a,n)
 { 
     
 }

@@ -1,3 +1,3 @@
-export default function mergehull(){
+module.exports = function mergehull(){
     
 }

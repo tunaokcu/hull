@@ -6,7 +6,7 @@
 //Use https://leetcode.com/problems/erect-the-fence/ to test
 
 
-export default function jarvis(points){
+module.exports =  function jarvis(points){
     // There must be at least 3 points 
      if (points.length < 3) return; 
         
@@ -133,5 +133,3 @@ function negativexAngle(start,end){
     return Math.atan2(-vectorY, -vectorX);
 }
 
-
-export {positivexAngle, negativexAngle}

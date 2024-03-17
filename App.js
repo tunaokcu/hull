@@ -1,10 +1,10 @@
-import {generatePointsGuassian, generatePointsUniform} from "./Helper/Distributions.js";
+const {generatePointsGuassian, generatePointsUniform} = require("./Helper/Distributions.js");
 //import { quickhull, graham, mergehull, jarvis } from "./Algorithms/Algorithms.js";
-import {quickhull, graham, mergehull, jarvis} from "./Algorithms/Algorithms.js";
+const {quickhull, graham, mergehull, jarvis} = require("./Algorithms/Algorithms.js");
 
-import Graphical from "./Graphical/Graphical.js";
+const Graphical = require("./Graphical/Graphical.js");
 
-export default class App{
+module.exports = class App{
     points;
     hull;
     algorithm;
@@ -392,3 +392,4 @@ function decode(strArr){
 function arrayifySet(set){
     return decode([...set])
 }
+

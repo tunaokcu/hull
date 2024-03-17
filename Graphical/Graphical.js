@@ -1,12 +1,13 @@
-import Camera from "./Camera.js";
-import { initShaders } from "./initShaders.js";
-import { vec3, flatten } from "./MV.js";
+const Camera = require("./Camera.js");
+const initShaders = require("./initShaders.js");
+const { vec3, flatten } = require("./MV.js");
+
 
 const GL_VERTEX_SIZE = 4;
 const VECTOR_DIMENSION = 2;
 
 //We could use WebGL or plain JS canvas functions here
-export default class Graphical{
+module.exports = class Graphical{
     TRIAL_LINE_COLOR  = [0, 0, 1, 1];
     FINAL_LINE_COLOR =  [1, 0, 0, 1];
     DOT_COLOR = [0, 1, 0, 1];

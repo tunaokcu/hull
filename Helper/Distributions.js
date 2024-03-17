@@ -1,4 +1,4 @@
-export {generatePointsGuassian, generatePointsUniform}
+module.exports = {generatePointsGuassian, generatePointsUniform}
 
 //https://online.stat.psu.edu/stat414/lesson/22/22.4
 

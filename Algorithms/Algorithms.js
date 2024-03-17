@@ -1,7 +1,7 @@
-import quickhull from "./QuickHull.js"
-import graham from "./Graham.js"
-import mergehull from "./Mergehull.js"
-import jarvis from "./Jarvis.js"
+const quickhull = require("./QuickHull.js");
+const graham = require("./Graham.js");
+const mergehull = require("./Mergehull.js");
+const jarvis = require("./Jarvis.js");
 
 
-export {quickhull, graham, mergehull, jarvis}
+module.exports = {quickhull, graham, mergehull, jarvis}

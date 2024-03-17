@@ -1,4 +1,4 @@
-export default function graham(points){
+module.exports = function graham(points){
     let newPoints = points.slice();
     
     // Find the centroid
@@ -15,7 +15,7 @@ export default function graham(points){
     let hull = [newPoints[rightMostIndex]]
 
     let i = (rightMostIndex + 1) % newPoints.length;
-
+    
     //TODO
     while (i != rightMostIndex){
 

@@ -25,7 +25,7 @@ function radians( degrees ) {
 //  Vector Constructors
 //
 
-export function vec2()
+function vec2()
 {
     var result = _argumentsToArray( arguments );
 
@@ -37,7 +37,7 @@ export function vec2()
     return result.splice( 0, 2 );
 }
 
-export function vec3()
+function vec3()
 {
     var result = _argumentsToArray( arguments );
 
@@ -50,7 +50,7 @@ export function vec3()
     return result.splice( 0, 3 );
 }
 
-export function vec4()
+function vec4()
 {
     var result = _argumentsToArray( arguments );
 
@@ -127,7 +127,7 @@ function mat3()
 
 //----------------------------------------------------------------------------
 
-export function mat4()
+function mat4()
 {
     var v = _argumentsToArray( arguments );
 
@@ -188,7 +188,7 @@ function equal( u, v )
 
 //----------------------------------------------------------------------------
 
-export function add( u, v )
+function add( u, v )
 {
     var result = [];
 
@@ -229,7 +229,7 @@ export function add( u, v )
 
 //----------------------------------------------------------------------------
 
-export function subtract( u, v )
+function subtract( u, v )
 {
     var result = [];
 
@@ -272,7 +272,7 @@ export function subtract( u, v )
 
 //----------------------------------------------------------------------------
 
-export function mult( u, v )
+function mult( u, v )
 {
     var result = [];
 
@@ -321,7 +321,7 @@ export function mult( u, v )
 //  Basic Transformation Matrix Generators
 //
 
-export function translate( x, y, z )
+function translate( x, y, z )
 {
     if ( Array.isArray(x) && x.length == 3 ) {
         z = x[2];
@@ -339,7 +339,7 @@ export function translate( x, y, z )
 
 //----------------------------------------------------------------------------
 
-export function rotate( angle, axis )
+function rotate( angle, axis )
 {
     if ( !Array.isArray(axis) ) {
         axis = [ arguments[1], arguments[2], arguments[3] ];
@@ -367,7 +367,7 @@ export function rotate( angle, axis )
 
 
 
-export function scale4(a, b, c) {
+function scale4(a, b, c) {
     var result = mat4();
     result[0][0] = a;
     result[1][1] = b;
@@ -398,7 +398,7 @@ function scale( x, y, z )
 //  ModelView Matrix Generators
 //
 
-export function lookAt( eye, at, up )
+function lookAt( eye, at, up )
 {
     if ( !Array.isArray(eye) || eye.length != 3) {
         throw "lookAt(): first parameter [eye] must be an a vec3";
@@ -437,7 +437,7 @@ export function lookAt( eye, at, up )
 //  Projection Matrix Generators
 //
 
-export function ortho( left, right, bottom, top, near, far )
+function ortho( left, right, bottom, top, near, far )
 {
     if ( left == right ) { throw "ortho(): left and right are equal"; }
     if ( bottom == top ) { throw "ortho(): bottom and top are equal"; }
@@ -460,7 +460,7 @@ export function ortho( left, right, bottom, top, near, far )
 
 //----------------------------------------------------------------------------
 
-export function perspective( fovy, aspect, near, far )
+function perspective( fovy, aspect, near, far )
 {
     var f = 1.0 / Math.tan( radians(fovy) / 2 );
     var d = far - near;
@@ -521,7 +521,7 @@ function dot( u, v )
 
 //----------------------------------------------------------------------------
 
-export function negate( u )
+function negate( u )
 {
     var result = [];
     for ( var i = 0; i < u.length; ++i ) {
@@ -533,7 +533,7 @@ export function negate( u )
 
 //----------------------------------------------------------------------------
 
-export function cross( u, v )
+function cross( u, v )
 {
     if ( !Array.isArray(u) || u.length < 3 ) {
         throw "cross(): first argument is not a vector of at least 3";
@@ -561,7 +561,7 @@ function length( u )
 
 //----------------------------------------------------------------------------
 
-export function normalize( u, excludeLastComponent )
+function normalize( u, excludeLastComponent )
 { 
     if ( excludeLastComponent ) {
         var last = u.pop();
@@ -628,7 +628,7 @@ function scale( s, u )
 //
 //
 
-export function flatten( v )
+function flatten( v )
 {
     if ( v.matrix === true ) {
         v = transpose( v );
@@ -671,3 +671,5 @@ var sizeof = {
     'mat3' : new Float32Array( flatten(mat3()) ).byteLength,
     'mat4' : new Float32Array( flatten(mat4()) ).byteLength
 };
+
+module.exports = {flatten, vec3, lookAt, ortho, mult, rotate, translate, scale4}
