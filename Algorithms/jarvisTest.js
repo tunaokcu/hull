@@ -1,6 +1,9 @@
 import jarvis, {negativexAngle, positivexAngle} from "./Jarvis.js"
+import graham from "./Graham.js";
 
 window.onload = () => {
+    grahamTest();
+    return;
     /*
     (0, 3)
     (4, 4)
@@ -69,8 +72,14 @@ function jarvisTest(){
     console.log(jarvis(testValues)[0]);
     console.log("(0, 3) (4, 4) (3, 1) (0, 0)");
     console.log(jarvis(testValues)[0]);
-
 }
+function grahamTest(){
+    let testValues = [[0, 3], [1, 1], [2, 2], [4, 4], [0, 0], [1, 2], [3, 1], [3, 3]]
+    console.log(graham(testValues)[0]);
+    console.log("(0, 3) (4, 4) (3, 1) (0, 0)");
+    console.log(graham(testValues)[0]);
+}
+
 function negativeTest(){
     let caseVsExpected = [
         {case: [[0, 0], [-1, -1]], expected: Math.PI/4},

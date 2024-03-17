@@ -1,6 +1,7 @@
 import {generatePointsGuassian, generatePointsUniform} from "./Helper/Distributions.js";
 //import { quickhull, graham, mergehull, jarvis } from "./Algorithms/Algorithms.js";
-import {quickhull, graham, mergehull, jarvis} from "./Algorithms/Algorithms.js";
+import {quickhull, mergehull, jarvis} from "./Algorithms/Algorithms.js";
+import graham from "./Algorithms/Graham.js";
 
 import Graphical from "./Graphical/Graphical.js";
 
