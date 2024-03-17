@@ -12,11 +12,11 @@ export default class App{
     constructor(){
         this.points = new Set();
         this.hull = [];
-        this.algorithm = jarvis;
+        this.algorithm = graham;
 
         this.animated = false; //in animated mode
         this.animationPlaying = false; //animation is playing(not paused)
-        this.frames = []; //we will get this form the algorithm function
+        this.frames = []; //we will get this from the algorithm function
 
         this.graphical = new Graphical();
 
@@ -33,6 +33,7 @@ export default class App{
             this.animationDelay /= 10
         }
     }
+    
     decreaseAnimationSpeed(){
         this.animationDelay *= 10
     }
@@ -175,6 +176,7 @@ export default class App{
         this.graphical.render(arrayifySet(this.points), this.currentPoint, this.incompleteLine, this.hull, this.coordinateSystemOn)  
     }
 
+    action = ""; //can be PAN, DOT 
     mousedown = false;
     currentPoint = [];
     incompleteLine = [];
@@ -185,73 +187,126 @@ export default class App{
         return  [clipCoords[0]/this.graphical.camera.currentZoom - this.graphical.camera.offsetX, clipCoords[1]/this.graphical.camera.currentZoom - this.graphical.camera.offsetY];
     }
 
-    mousedownHandler(event, clipCoords){
+    //TODO fix
+    withinClip(clipCoords){
+        return true;
+        /*
+        let w = 1/this.graphical.camera.currentZoom;
+
+        let xStart =  - this.graphical.camera.offsetX;
+        let xEnd = xStart + 2 * 1/*/
+        return clipCoords[0] >= -1 && clipCoords[0] <= 1 && clipCoords[1] >= -1 && clipCoords[1] <= 1;
+    }
+
+
+    mousedownHandler(event, clipCoords){    
+
         let clipCoordsOriginal = clipCoords;
         clipCoords = this.calcDotPlacement(clipCoords);
 
-        switch(this.tool){ 
-            case "pen":
+        if (this.withinClip(clipCoords)){
+            switch (event.button){
+                //Left click
+                case 0: 
+                    //Cannot add new dots while animated
+                    if (this.animated) { return; }
+
+                    this.currentPoint = clipCoords;
+                    this.calculateHull();
+                    this.render();
+
+                    this.action = "DOT"
+
+                    break;
+
+                //Right click
+                case 2: 
+
+                    this.action = "PAN";
+
+                    break;
+
+                //Anything else
+                default: return;
+            }
+        }
+
+        this.lastMousePosition = clipCoordsOriginal;
+    }
+
+
+    mousemoveHandler(event, clipCoords){
+
+        let clipCoordsOriginal = clipCoords;
+        clipCoords = this.calcDotPlacement(clipCoords);
+
+        switch (this.action){
+            //Nothing
+            case "": return; 
+
+
+            //Dot placement
+            case "DOT": 
                 this.currentPoint = clipCoords
                 this.calculateHull();
                 this.render();
+
                 break;
-            case "cursor":
+            
+            //Panning
+            case "PAN":
+                let curMousePosition = clipCoordsOriginal;
+                let moveVector = [curMousePosition[0] - this.lastMousePosition[0], curMousePosition[1] - this.lastMousePosition[1]]
+                this.graphical.camera.move(this.graphical.gl, moveVector);
+                if (!this.animationPlaying){
+                    if (this.animated && this.frames) { this.animationRender(this.frames[this.lastFrame]) }
+                    else { this.render() };
+                }
+
                 break;
+
+            //Should be an error
+            default: return;
         }
-        this.mousedown = true;
+        
+
         this.lastMousePosition = clipCoordsOriginal;
 
     }
 
-    mousemoveHandler(event, clipCoords){
-        let clipCoordsOriginal = clipCoords;
-        clipCoords = this.calcDotPlacement(clipCoords);
-
-        switch(this.tool){ 
-            case "pen":
-                if (this.mousedown){
-                    this.currentPoint = clipCoords
-                    this.calculateHull();
-                    this.render();
-                }
-                break;
-            case "cursor":
-                if (this.mousedown){
-                    let curMousePosition = clipCoordsOriginal;
-                    let moveVector = [curMousePosition[0] - this.lastMousePosition[0], curMousePosition[1] - this.lastMousePosition[1]]
-                    this.graphical.camera.move(this.graphical.gl, moveVector);
-                    if (!this.animationPlaying){
-                        if (this.animated && this.frames) { this.animationRender(this.frames[this.lastFrame]) }
-                        else { this.render() };
-                    }
-                }
-                break;
-        }
-        this.lastMousePosition = clipCoordsOriginal;
-
-    }
     mouseupHandler(event, clipCoords){
+
         let clipCoordsOriginal = clipCoords;
         clipCoords = this.calcDotPlacement(clipCoords);
 
-        switch(this.tool){ 
-            case "pen":
+        switch (this.action){
+            //Nothing
+            case "": return; 
+
+
+            //Dot placement
+            case "DOT": 
                 this.currentPoint = [];
 
                 this.addPoints([clipCoords])
                 this.calculateHull();
-                //this.render();
+
                 break;
-            case "cursor":
+            
+            //Panning
+            case "PAN":
                 if (!this.animationPlaying){
                     if (this.animated && this.frames) { this.animationRender(this.frames[this.lastFrame]) }
                     else { this.render() };
                 }
                 break;
-        }
-        this.mousedown = false;
-        this.lastMousePosition = clipCoordsOriginal;
 
+            //Should be an error
+            default: return;
+        }
+        
+        this.action = "";
+        this.lastMousePosition = clipCoordsOriginal;
     }
 
     zoomIn(){

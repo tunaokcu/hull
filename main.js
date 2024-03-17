@@ -25,11 +25,17 @@ window.onload = () => {
             APP.handleStartAnimation()
         }
     }, false);
+
+    //Prevent right click menu
+    document.addEventListener('contextmenu', function(evt) { 
+        evt.preventDefault();
+      }, false);
 }
 
 
 
 function mousedownHandler(event, app){
+    
     let clipCoords = clientToClip(event);
     if (clipCoords){
         app.mousedownHandler(event, clipCoords);
@@ -42,6 +48,8 @@ function mousemoveHandler(event, app){
     }
 }
 function mouseupHandler(event, app){
+    event.preventDefault();
+
     let clipCoords = clientToClip(event);
     if (clipCoords){
         app.mouseupHandler(event, clipCoords);

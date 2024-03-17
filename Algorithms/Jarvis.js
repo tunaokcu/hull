@@ -40,13 +40,13 @@ export default function jarvis(points){
 
      // March up     
      do {
-        //!INCOMPREHENSIBLE BUG !!!!! before is empty, pushing is just one array, after has three arrays.. how????
+        //!INCOMPREHENSIBLE BUG !!!!! "before" is empty, "pushing" is just one array, "after" has three arrays.. how????
         console.log("before:", hull)
         console.log("pushing", points[currentPoint])
-         hull.push(points[currentPoint]);
-         console.log("after:", hull)
+        hull.push(points[currentPoint]);
+        console.log("after:", hull)
 
-         frames.push(hull.slice())
+        frames.push(hull.slice())
         console.log(frames)
         console.log(points[currentPoint])
         console.log("----")

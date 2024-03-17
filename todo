@@ -1,0 +1,6 @@
+
+Bugs
+1)Our current Jarvis algorithm includes points between hull lines in the hull. This is wrong behaviour.
+2)Can place point OUTSIDE the canvas.
+3)Animation doesn't work.
+4)Animation speed adjustments don't work.
