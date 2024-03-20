@@ -15,7 +15,7 @@ export default class App{
     algorithm;
     animated;
     constructor(){
-        this.points = new Set();
+        this.points = [];
         this.hull = [];
         this.algorithm = jarvis;
 
@@ -64,9 +64,6 @@ export default class App{
     }
 
     animationRender(frame){
-        //Draw every point on screen
-        let points = arrayifySet(this.points);
-
         //Set current point as that last point
         let currentPoint = frame[frame.length - 1];
         
@@ -82,7 +79,7 @@ export default class App{
 
 
 
-        this.graphical.render(points, currentPoint, incompleteLine, completeLines, this.coordinateSystemOn)  
+        this.graphical.render(this.points, currentPoint, incompleteLine, completeLines, this.coordinateSystemOn)  
 
     }
 
@@ -139,46 +136,47 @@ export default class App{
 
 
     //Input is an array of points. Each point is a 2D array of xy coordinates.
-    addPoints(points){
-        points.forEach((point) => this.points.add(encode(point)))
-
+    addPoints(addedPoints){
+        //Add the points to the already existing array and calculate the new hull.
+        this.points = this.points.concat(addedPoints)
         this.calculateHull();
     }
 
     calculateHull(){
-        if (this.points.size >= 2){
-            if (this.points.size == 2 && this.currentPoint.length == 0) { return; }
-            let arr = arrayifySet(this.points);
-            if (this.currentPoint.length > 0){
-                arr.push(this.currentPoint)
-            }
-            const [hull, frames] = this.algorithm(arr, this.points.size)
-            this.hull = hull;
-            this.frames = frames;
-
+        //Point count is the number of points in the points array + 1 if a point is being dragged.
+        let pointCount = this.points.length + (this.currentPoint.length === 0 ? 0 : 1);
+        
+        //Not enough to make a polygon, so return.
+        if (pointCount < 3){
+            return;
         }
+
+        //! PROBABLY VERY BAD FOR PERFORMANCE: we are copying the arr before every calculation to avoid changing it. We should fix this somehow 
+        let allPoints = this.points.slice();
+        if (this.currentPoint.length > 0){
+            allPoints.push(this.currentPoint)
+        }
+
+        // Calculate and set hull and animation frames
+        const [hull, frames] = this.algorithm(allPoints)
+        
+        this.hull = hull;
+        this.frames = frames;
+
+    
     }
 
-    /*
-    findHull(){
-        if (!this.animated && this.points.length >= 3){
-            this.hull = this.algorithm(this.points, this.points.length)
-            this.graphical.drawHull(hull)
-        }
-
-        this.graphical.render();
-    }*/
-    generateGaussian(){
-        this.addPoints(generatePointsGuassian(1000, 1));
+    generateGaussian(n=1000, range=1){
+        this.addPoints(generatePointsGuassian(n, range));
         this.render();
     }
-    generateUniform(){
-        this.addPoints(generatePointsUniform(1000, 1));
+    generateUniform(n=1000, range=1){
+        this.addPoints(generatePointsUniform(n, range));
         this.render();
     }
 
     render(){
-        this.graphical.render(arrayifySet(this.points), this.currentPoint, this.incompleteLine, this.hull, this.coordinateSystemOn)  
+        this.graphical.render(this.points, this.currentPoint, this.incompleteLine, this.hull, this.coordinateSystemOn)  
     }
 
     action = ""; //can be PAN, DOT 
@@ -447,19 +445,7 @@ export default class App{
     
 }
 
-function encode(arr){
-    return JSON.stringify(arr);
-}
 
-function decode(strArr){
-    let arr = []
-    strArr.forEach((str) => arr.push(JSON.parse(str)))
-    return arr
-}
-
-function arrayifySet(set){
-    return decode([...set])
-}
 
 function clientToClip(event){
     return canvasToClip(clientToCanvas(event));
