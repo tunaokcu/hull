@@ -5,6 +5,10 @@ import graham from "./Algorithms/Graham.js";
 
 import Graphical from "./Graphical/Graphical.js";
 
+
+let currentCanvasCoords;
+let CANVAS_WIDTH, CANVAS_HEIGHT;
+
 export default class App{
     points;
     hull;
@@ -13,7 +17,7 @@ export default class App{
     constructor(){
         this.points = new Set();
         this.hull = [];
-        this.algorithm = graham;
+        this.algorithm = jarvis;
 
         this.animated = false; //in animated mode
         this.animationPlaying = false; //animation is playing(not paused)
@@ -26,6 +30,8 @@ export default class App{
         this.initUI();
 
         this.graphical.drawCoordinateSystem();
+
+        this.initHandlers();
     }
 
     animationDelay = 1000;
@@ -39,7 +45,7 @@ export default class App{
         this.animationDelay *= 10
     }
 
-    lastFrame
+    lastFrame;
     animation(frameIndex=0){ 
         this.lastFrame = frameIndex > 0 ? frameIndex-1 : 0; 
         if (!this.animated){  this.handleSkipforward();       return; } //we went back to responsive mode
@@ -121,8 +127,6 @@ export default class App{
     }
     
 
-
-
     /*
     replacePoint(point){
         //Delete last point
@@ -200,115 +204,11 @@ export default class App{
     }
 
 
-    mousedownHandler(event, clipCoords){    
-
-        let clipCoordsOriginal = clipCoords;
-        clipCoords = this.calcDotPlacement(clipCoords);
-
-        if (this.withinClip(clipCoords)){
-            switch (event.button){
-                //Left click
-                case 0: 
-                    //Cannot add new dots while animated
-                    if (this.animated) { return; }
-
-                    this.currentPoint = clipCoords;
-                    this.calculateHull();
-                    this.render();
-
-                    this.action = "DOT"
-
-                    break;
-
-                //Right click
-                case 2: 
-
-                    this.action = "PAN";
-
-                    break;
-
-                //Anything else
-                default: return;
-            }
-        }
-
-        this.lastMousePosition = clipCoordsOriginal;
-    }
 
 
-    mousemoveHandler(event, clipCoords){
-
-        let clipCoordsOriginal = clipCoords;
-        clipCoords = this.calcDotPlacement(clipCoords);
-
-        switch (this.action){
-            //Nothing
-            case "": return; 
 
 
-            //Dot placement
-            case "DOT": 
-                this.currentPoint = clipCoords
-                this.calculateHull();
-                this.render();
 
-                break;
-            
-            //Panning
-            case "PAN":
-                let curMousePosition = clipCoordsOriginal;
-                let moveVector = [curMousePosition[0] - this.lastMousePosition[0], curMousePosition[1] - this.lastMousePosition[1]]
-                this.graphical.camera.move(this.graphical.gl, moveVector);
-                if (!this.animationPlaying){
-                    if (this.animated && this.frames) { this.animationRender(this.frames[this.lastFrame]) }
-                    else { this.render() };
-                }
-
-                break;
-
-            //Should be an error
-            default: return;
-        }
-        
-
-        this.lastMousePosition = clipCoordsOriginal;
-
-    }
-
-    mouseupHandler(event, clipCoords){
-
-        let clipCoordsOriginal = clipCoords;
-        clipCoords = this.calcDotPlacement(clipCoords);
-
-        switch (this.action){
-            //Nothing
-            case "": return; 
-
-
-            //Dot placement
-            case "DOT": 
-                this.currentPoint = [];
-
-                this.addPoints([clipCoords])
-                this.calculateHull();
-
-                break;
-            
-            //Panning
-            case "PAN":
-                if (!this.animationPlaying){
-                    if (this.animated && this.frames) { this.animationRender(this.frames[this.lastFrame]) }
-                    else { this.render() };
-                }
-                break;
-
-            //Should be an error
-            default: return;
-        }
-        
-        this.action = "";
-        this.lastMousePosition = clipCoordsOriginal;
-    }
 
     zoomIn(){
         this.graphical.camera.zoomIn(this.graphical.gl); 
@@ -378,6 +278,173 @@ export default class App{
         this.skipAnimation();
     }
 
+    initHandlers(){
+        CANVAS_WIDTH = document.getElementById("gl-canvas").width;
+        CANVAS_HEIGHT = document.getElementById("gl-canvas").height;
+    
+        currentCanvasCoords = document.getElementById( "gl-canvas" ).getBoundingClientRect();    
+        document.addEventListener("scroll", () => (currentCanvasCoords = document.getElementById( "gl-canvas" ).getBoundingClientRect()));
+    
+        // Dot placement, pan handler: mousedown, mousemove, mouseup
+        document.addEventListener("mousedown", (e) => this.mousedownHandler(e)); //? should be canvas
+        document.addEventListener("mousemove", (e) => this.mousemoveHandler(e)); 
+        document.addEventListener("mouseup", (e) => this.mouseupHandler(e)); //? should be canvas
+    
+        //Zoom handler
+        document.addEventListener("wheel", (e) => this.zoomHandler(e), {passive: false}); //the {passive: false} part is necessary for the zoomHandler to prevent default action
+        document.addEventListener("keyup", (e) => {
+            if (e.keyCode == 65){
+                console.log("here")
+                this.handleStartAnimation()
+            }
+        }, false);
+    
+        //Prevent right click menu
+        document.addEventListener('contextmenu', (e) => { 
+            e.preventDefault();
+          }, false);
+    }
+
+    mousedownHandler(event){
+    
+        let clipCoords = clientToClip(event);
+        if (!clipCoords){
+            return;
+        }
+
+
+        let clipCoordsOriginal = clipCoords;
+        clipCoords = this.calcDotPlacement(clipCoords);
+
+        if (this.withinClip(clipCoords)){
+            switch (event.button){
+                //Left click
+                case 0: 
+                    //Cannot add new dots while animated
+                    if (this.animated) { return; }
+
+                    this.currentPoint = clipCoords;
+                    this.calculateHull();
+                    this.render();
+
+                    this.action = "DOT"
+
+                    break;
+
+                //Right click
+                case 2: 
+
+                    this.action = "PAN";
+
+                    break;
+
+                //Anything else
+                default: return;
+            }
+        }
+
+        this.lastMousePosition = clipCoordsOriginal;
+    }
+
+    mousemoveHandler(event){
+        let clipCoords = clientToClip(event);
+        if (!clipCoords){
+            return;
+        }
+
+        let clipCoordsOriginal = clipCoords;
+        clipCoords = this.calcDotPlacement(clipCoords);
+
+        switch (this.action){
+            //Nothing
+            case "": return; 
+
+
+            //Dot placement
+            case "DOT": 
+                this.currentPoint = clipCoords
+                this.calculateHull();
+                this.render();
+
+                break;
+            
+            //Panning
+            case "PAN":
+                let curMousePosition = clipCoordsOriginal;
+                let moveVector = [curMousePosition[0] - this.lastMousePosition[0], curMousePosition[1] - this.lastMousePosition[1]]
+                this.graphical.camera.move(this.graphical.gl, moveVector);
+                if (!this.animationPlaying){
+                    if (this.animated && this.frames) { this.animationRender(this.frames[this.lastFrame]) }
+                    else { this.render() };
+                }
+
+                break;
+
+            //Should be an error
+            default: return;
+        }
+        
+
+        this.lastMousePosition = clipCoordsOriginal;
+    }
+    mouseupHandler(event){
+        event.preventDefault();
+    
+        let clipCoords = clientToClip(event);
+        if (!clipCoords){
+            return; 
+        }
+
+        let clipCoordsOriginal = clipCoords;
+        clipCoords = this.calcDotPlacement(clipCoords);
+
+        switch (this.action){
+            //Nothing
+            case "": return; 
+
+
+            //Dot placement
+            case "DOT": 
+                this.currentPoint = [];
+
+                this.addPoints([clipCoords])
+                this.calculateHull();
+
+                break;
+            
+            //Panning
+            case "PAN":
+                if (!this.animationPlaying){
+                    if (this.animated && this.frames) { this.animationRender(this.frames[this.lastFrame]) }
+                    else { this.render() };
+                }
+                break;
+
+            //Should be an error
+            default: return;
+        }
+        
+        this.action = "";
+        this.lastMousePosition = clipCoordsOriginal;
+    }
+    
+    zoomHandler(event){
+        if (event.ctrlKey && event.deltaY != 0){
+            event.preventDefault();
+    
+            let direction = event.deltaY < 0 ? "up" : "down";
+    
+            if (direction === "up"){
+                this.zoomIn();
+            }
+            else{
+                this.zoomOut();
+            }
+        }
+    }
+    
+
+    
 }
 
 function encode(arr){
@@ -392,4 +459,28 @@ function decode(strArr){
 
 function arrayifySet(set){
     return decode([...set])
+}
+
+function clientToClip(event){
+    return canvasToClip(clientToCanvas(event));
+}
+
+function clientToCanvas(event){
+    //! ISSUE WITH getBoundingClientRect(): it returns VERY SLIGHTLY smaller values than it should 
+    // Example: DOMRect {x: 7.997159004211426, y: 7.997159004211426, width: 899.9999389648438, height: 899.9999389648438, top: 7.997159004211426, …} instead of 8, 8, 900, 900
+    // Apparently, it might have something to do with zooming in and out
+    let res = [event.clientX - currentCanvasCoords.left, event.clientY - currentCanvasCoords.top]; 
+
+    //Quick fix: it seems that we encounter this issue only when we click just outside the edge anyways, so this fix should work
+    /*if (res[0] < 0 || res[1] < 0 || res[0] > CANVAS_WIDTH || res[1] > CANVAS_HEIGHT){
+        return null;
+    }*/
+    return res;
+}
+
+function canvasToClip(canvasCoords){
+    if (canvasCoords == null){ return null; }
+   
+    return [((-CANVAS_WIDTH) + 2*canvasCoords[0])/CANVAS_WIDTH,
+                ((CANVAS_HEIGHT) - 2*canvasCoords[1])/CANVAS_HEIGHT]
 }

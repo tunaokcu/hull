@@ -19,7 +19,7 @@ export default function graham(points){
 
     let stack = []
 
-    let centroid = findCentroid(newPoints);
+    let centroid = findLowestLeftmost(newPoints);
     sortAccordingToCentroid(newPoints, centroid);
     
     for (const point of newPoints){
@@ -71,7 +71,23 @@ export default function graham(points){
     return [hull, []];
 }
 */
+function findLowestLeftmost(points) {
+    let leftmost = points[0]
+    let j = 0;
 
+    for (let i = 1; i < points.length; i++){
+        if (points[i][0] < leftmost[0]){
+            leftmost = points[i]
+            j = i; 
+        }
+        else if (points[i][0] == leftmost[0] && points[i][1] < rightMost[1]){
+            leftmost = points[i];
+            j = i;
+        }
+    }
+
+    return j;
+}
 function lexicographicSort(points) {
     let pointsCopy = points.slice();
 
@@ -95,8 +111,22 @@ function sortAccordingToCentroid(points, centroid){
     points.sort((a, b) => {
         let angle = crossProduct(centroid, a, b);
 
-        return angle == 0 ? distance(centroid, a) - distance(centroid, b) : -angle;
+        return angle == 0 ? -(distance(centroid, a) - distance(centroid, b)) : -angle;
     })
+    
+    /*
+    let newPoints = []
+
+    let i = 0;
+    while (i < points.length){
+        newPoints.push(points[i])
+        while (i < points.length -1  && crossProduct(centroid, points[i], points[i+1]) === 0){
+            i += 1
+        } 
+        i += 1
+    }
+
+    points = newPoints;*/
 }
 
 function findCentroid(points){

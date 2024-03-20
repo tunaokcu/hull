@@ -1,3 +1,8 @@
+Add
+1)Graham
+2)Merge hull
+3)Quickhull
+4)Custom mouse cursor(different cursor while dragging, different cursor while placing point, etc)
 
 Bugs
 1)Our current Jarvis algorithm includes points between hull lines in the hull. This is wrong behaviour.
