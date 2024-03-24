@@ -3,6 +3,8 @@
     March up, march down
 */
 
+import { findLowestAndHighest } from "./Utility.js";
+
 //Use https://leetcode.com/problems/erect-the-fence/ to test
 
 
@@ -15,26 +17,7 @@ export default function jarvis(points){
      let frames = [];
  
      // Find the indices of the lowest and highest points to the LEFT
-     let lowestPoint = 0;
-     let highestPoint = 0;
-
-     
-     for (let i = 1; i < points.length; i++){
-        if (points[i][1] < points[lowestPoint][1]){ 
-            lowestPoint = i; 
-        }
-        
-        else if (points[i][1] == points[lowestPoint][1] && points[i][0] > points[lowestPoint][0]){ //rightmost lowest point
-            lowestPoint = i
-        }
-        
-        if (points[i][1] > points[highestPoint][1]){ 
-            highestPoint = i; 
-        }
-        else if (points[i][1] == points[highestPoint][1] && points[i][0] > points[highestPoint][0]){
-            highestPoint = i;
-        }
-     }
+     const [lowestPoint, highestPoint] = findLowestAndHighest(points);
      
      let currentPoint = lowestPoint;
 

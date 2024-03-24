@@ -1,3 +1,41 @@
+import { findLowestAndHighest } from "./Utility.js";
+
+export default function graham(points){
+    let start = findLowestLeftmost(points);
+    let centroid = findCentroid(points);
+
+    console.log(points);
+    points = sortAccordingToCentroid(points, centroid);
+    console.log(points);
+
+    let hull = [];
+    let n = 0;
+
+    //return [hull, []]
+    //console.log(points);
+    for (const point of points){
+        n = hull.length;
+
+        while (n > 1 && !left(hull[n-2], hull[n-1], point)){
+            hull.pop()
+        }
+        hull.push(point);
+    }
+
+    return [hull, []]
+}
+
+function prev(points, i){
+    let n = points.length;
+
+    return (i-1+n) % n
+}
+
+function next(points, i){
+    let n = points.length;
+
+    return (i+1) % n
+}
 
 /*
 let points be the list of points
@@ -13,24 +51,7 @@ for point in points:
     push point to stack
 end
 */
-export default function graham(points){
-    console.log("here")
-    let newPoints = points.slice();
 
-    let stack = []
-
-    let centroid = findLowestLeftmost(newPoints);
-    sortAccordingToCentroid(newPoints, centroid);
-    
-    for (const point of newPoints){
-        while (stack.length > 1 && !left(stack[stack.length -2], stack[stack.length - 1], point)){
-            stack.pop()
-        }
-        stack.push(point)
-    }
-
-    return [stack, []];
-}
 /*
 export default function graham(points){
     let newPoints = points.slice();
@@ -88,19 +109,19 @@ function findLowestLeftmost(points) {
 
     return j;
 }
-function lexicographicSort(points) {
-    let pointsCopy = points.slice();
-
-    //Sort according to x, then y(to break up the ties).
-    pointsCopy.sort((a, b) => a[0] != b[0] ? a[0] - b[0] : a[1] - b[1]);
-
-    return pointsCopy;
-}
 
 function crossProduct(p1, p2, p3) {
-    console.log(p1, p2, p3)
-    return (p2[0] - p1[0]) * (p3[1] - p1[1]) - (p2[1] - p1[1]) * (p3[0] - p1[0]);
-    //return p1[0]*p2[1] + p3[0]*p1[1] + p2[0]*p3[1] - p3[0]*p2[1] - p1[0]*p3[1] - p2[0]*p1[1];
+    return det(p1, p2, p3);
+}
+
+function det(p1, p2, p3) {
+    let x0, x1, x2, y0, y1, y2;
+
+    [x0, y0] = p1;
+    [x1, y1] = p2;
+    [x2, y2] = p3;
+
+    return x0*y1 + x2*y0 + x1*y2 - x2*y1 - x0*y2 - x1*y0;
 }
 
 function distance(p1, p2) {
@@ -108,25 +129,23 @@ function distance(p1, p2) {
 }
 
 function sortAccordingToCentroid(points, centroid){
-    points.sort((a, b) => {
+    const [lowest, highest] = findLowestAndHighest(points);
+
+    //TODO split into two and sort
+
+    return points.sort((a, b) => {
+        /*
+        We have a line centroid-a-b.
+        For b to come after a, this has to be a left turn. In this case we return minus.
+        If crossProduct(centroid, a ,b ) = 0, however, the one with the smallest distance from centroid should come first
+        */
+
         let angle = crossProduct(centroid, a, b);
 
-        return angle == 0 ? -(distance(centroid, a) - distance(centroid, b)) : -angle;
+        return angle == 0 ? -(distance(centroid, a) - distance(centroid, b)) : angle;
     })
     
-    /*
-    let newPoints = []
 
-    let i = 0;
-    while (i < points.length){
-        newPoints.push(points[i])
-        while (i < points.length -1  && crossProduct(centroid, points[i], points[i+1]) === 0){
-            i += 1
-        } 
-        i += 1
-    }
-
-    points = newPoints;*/
 }
 
 function findCentroid(points){

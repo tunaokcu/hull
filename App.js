@@ -142,6 +142,7 @@ export default class App{
         this.calculateHull();
     }
 
+    //Calculate and rerender hull. Calculate frames as well.
     calculateHull(){
         //Point count is the number of points in the points array + 1 if a point is being dragged.
         let pointCount = this.points.length + (this.currentPoint.length === 0 ? 0 : 1);
@@ -158,12 +159,7 @@ export default class App{
         }
 
         // Calculate and set hull and animation frames
-        const [hull, frames] = this.algorithm(allPoints)
-        
-        this.hull = hull;
-        this.frames = frames;
-
-    
+        [this.hull, this.frames] = this.algorithm(allPoints)
     }
 
     generateGaussian(n=1000, range=1){
@@ -222,7 +218,7 @@ export default class App{
     }
 
     clearScreen(){
-        this.points = new Set();
+        this.points = []
         this.hull = [];
         this.state = [];
         this.handleSkipforward();
@@ -277,16 +273,18 @@ export default class App{
     }
 
     initHandlers(){
-        CANVAS_WIDTH = document.getElementById("gl-canvas").width;
-        CANVAS_HEIGHT = document.getElementById("gl-canvas").height;
+        let canvas = document.getElementById("gl-canvas");
+
+        CANVAS_WIDTH = canvas.width;
+        CANVAS_HEIGHT = canvas.height;
     
-        currentCanvasCoords = document.getElementById( "gl-canvas" ).getBoundingClientRect();    
-        document.addEventListener("scroll", () => (currentCanvasCoords = document.getElementById( "gl-canvas" ).getBoundingClientRect()));
+        currentCanvasCoords = canvas.getBoundingClientRect();    
+        document.addEventListener("scroll", () => (currentCanvasCoords = canvas.getBoundingClientRect()));
     
         // Dot placement, pan handler: mousedown, mousemove, mouseup
-        document.addEventListener("mousedown", (e) => this.mousedownHandler(e)); //? should be canvas
+        canvas.addEventListener("mousedown", (e) => this.mousedownHandler(e)); 
         document.addEventListener("mousemove", (e) => this.mousemoveHandler(e)); 
-        document.addEventListener("mouseup", (e) => this.mouseupHandler(e)); //? should be canvas
+        document.addEventListener("mouseup", (e) => this.mouseupHandler(e)); 
     
         //Zoom handler
         document.addEventListener("wheel", (e) => this.zoomHandler(e), {passive: false}); //the {passive: false} part is necessary for the zoomHandler to prevent default action
