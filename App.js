@@ -405,7 +405,8 @@ export default class App{
 
                 this.addPoints([clipCoords])
                 this.calculateHull();
-
+                this.render();
+                
                 break;
             
             //Panning
