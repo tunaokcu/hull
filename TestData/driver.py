@@ -1,12 +1,11 @@
 import subprocess
 import simplejson as json
 
-def runJS(path="../Algorithms/Graham.js"):
+def runJS(path="../Algorithms/Test.js", n=10):
     #Prepare the command
-    commandStr = f"node {path}"
+    commandStr = f"node {path} {n}"
     commandToRun = commandStr.split()
 
-    print(commandToRun)
     #Run the command and capture output
     result = subprocess.run(commandToRun, capture_output=True, text=True)
     output = result.stdout.strip()
@@ -14,7 +13,3 @@ def runJS(path="../Algorithms/Graham.js"):
 
 def jsonToList(jsonStr):
     return json.loads(jsonStr)
-
-
-res = runJS("../Algorithms/Test.js")
-print(res)
