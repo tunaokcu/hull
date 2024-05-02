@@ -22,3 +22,8 @@ export function findLowestAndHighest(points){
 
     return [lowestPoint, highestPoint];
 }
+
+
+function copy2DArr(arr){
+    return arr.map((item) => item.slice());
+}
