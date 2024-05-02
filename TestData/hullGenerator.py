@@ -1,4 +1,4 @@
-from pyhull.convex_hull import ConvexHull
+from pyhull.convex_hull import ConvexHull, qconvex
 from driver import runJS, jsonToList
 import os
 
@@ -16,12 +16,8 @@ def testForNpoints(n=10):
 
     #Try using pyhull.convex_hull, our ground truth/oracle
     #?????????? through a cursory testing I have found out that this module gives incorrect outputs
-    print(type(input))
-    hull = ConvexHull(input)
-    print(hull.points)
-    groundTruth = sorted(hull.points)
+    groundTruth = hullOracle(input)
 
-    
     print(output, "\n", groundTruth)
     
     #printFormatted(input)
@@ -39,4 +35,13 @@ def printFormatted(points):
         print(point[0])
         print(point[1])
 
-testForNpoints(5)
+def hullOracle(points):
+    hull = qconvex("p", points)[2:]
+
+    #This mess parses the return value of hull    
+    return sorted(list(map(lambda x: list(map(lambda a: int(a), x.split())), hull)))
+
+
+
+
+testForNpoints(100)
