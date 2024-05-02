@@ -3,6 +3,8 @@ Add
 2)Merge hull
 3)Quickhull
 4)Custom mouse cursor(different cursor while dragging, different cursor while placing point, etc)
+5)Could add a scrollable log of actions 
+6)Could add the ability to import and export points
 
 Bugs
 1)Our current Jarvis algorithm includes points between hull lines in the hull. This is wrong behaviour.

@@ -17,7 +17,7 @@ export default class App{
     constructor(){
         this.points = [];
         this.hull = [];
-        this.algorithm = graham;
+        this.algorithm = jarvis;
 
         this.animated = false; //in animated mode
         this.animationPlaying = false; //animation is playing(not paused)
@@ -217,6 +217,24 @@ export default class App{
         }
     }
 
+    addPointByForm(event){
+        //Prevent reload
+        event.preventDefault();
+
+        //Parse x and y 
+        let x = parseFloat(event.target.elements.xCoord.value);
+        let y = parseFloat(event.target.elements.yCoord.value);
+
+        //Add point (x, y), show changes
+        this.addPoints([[x, y]])
+        this.render();
+
+        //Clear the form fields after submission
+        document.getElementById("xCoord").value = "";
+        document.getElementById("yCoord").value = "";
+
+    }
+
     clearScreen(){
         this.points = []
         this.hull = [];
@@ -236,6 +254,7 @@ export default class App{
     
         document.getElementById("generateGaussian").addEventListener("click", () => this.generateGaussian());
         document.getElementById("generateUniform").addEventListener("click", () => this.generateUniform());
+        document.getElementById("addPoint").addEventListener("submit", (event) => this.addPointByForm(event));
         document.getElementById("clear").addEventListener("click", () => this.clearScreen());
     }
     

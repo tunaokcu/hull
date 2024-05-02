@@ -1,9 +1,9 @@
-import { generatePointsUniform } from "../Helper/Distributions.js";
+import { generateIntPointsUniform } from "../Helper/Distributions.js";
 import jarvis from "./Jarvis.js";
 
 function runTest(n, algorithm=jarvis,range=100){
     //Generate random points
-    let arr = generatePointsUniform(n, range);
+    let arr = generateIntPointsUniform(n, range);
 
     //Log arr
     console.log(JSON.stringify(arr));

@@ -1,4 +1,4 @@
-export {generatePointsGuassian, generatePointsUniform}
+export {generatePointsGuassian, generatePointsUniform, generateIntPointsUniform}
 
 //https://online.stat.psu.edu/stat414/lesson/22/22.4
 
@@ -44,3 +44,6 @@ function generatePointsUniform(n, range){
     return points;
 }
 
+function generateIntPointsUniform(n, range){
+  return generatePointsUniform(n, range).map((point) => [Math.ceil(point[0]), Math.ceil(point[1])]);
+}
