@@ -1,1 +1,2 @@
 Edward Angel, Dave Shreiner: MV.js and initShaders.js are their code. flatten, vec3, vec2, translate lookAt, ortho, mult and rotate functions used. Link: https://www.interactivecomputergraphics.com/Code/
+Gaussian function: https://stackoverflow.com/questions/25582882/javascript-math-random-normal-distribution-gaussian-bell-curve
