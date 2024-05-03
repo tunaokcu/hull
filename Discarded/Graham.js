@@ -167,23 +167,8 @@ function findLowestLeftmost(points) {
     return j;
 }
 
-function crossProduct(p1, p2, p3) {
-    return det(p1, p2, p3);
-}
 
-function det(p1, p2, p3) {
-    let x0, x1, x2, y0, y1, y2;
 
-    [x0, y0] = p1;
-    [x1, y1] = p2;
-    [x2, y2] = p3;
-
-    return x0*y1 + x2*y0 + x1*y2 - x2*y1 - x0*y2 - x1*y0;
-}
-
-function distance(p1, p2) {
-    return Math.sqrt(Math.pow(p2[0] - p1[0], 2) + Math.pow(p2[1] - p1[1], 2));
-}
 
 function sortAccordingToCentroid(points, centroid){
     //const [lowest, highest] = findLowestAndHighest(points);
@@ -234,9 +219,6 @@ function findRightmost(points){
 }
 
 
-function left(p1, p2, p3) {
-    return crossProduct(p1, p2, p3) > 0;
-}
 
 /*
 export default function graham(points){

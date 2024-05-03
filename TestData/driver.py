@@ -7,6 +7,7 @@ def runJS(path="../Algorithms/Test.js", n=10):
 
     #Run the command and capture output
     result = subprocess.run(commandToRun, capture_output=True, text=True)
+    print(result)
     output = result.stdout.strip()
     return output
 
