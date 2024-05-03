@@ -2,6 +2,8 @@ Add
 1)Graham
 2)Merge hull
 3)Quickhull
+
+Optional
 4)Custom mouse cursor(different cursor while dragging, different cursor while placing point, etc)
 5)Could add a scrollable log of actions 
 6)Could add the ability to import and export points

@@ -304,6 +304,7 @@ export default class App{
         canvas.addEventListener("mousedown", (e) => this.mousedownHandler(e)); 
         document.addEventListener("mousemove", (e) => this.mousemoveHandler(e)); 
         document.addEventListener("mouseup", (e) => this.mouseupHandler(e)); 
+        document.addEventListener("selectstart", (e) => this.highlightHandler(e));
     
         //Zoom handler
         document.addEventListener("wheel", (e) => this.zoomHandler(e), {passive: false}); //the {passive: false} part is necessary for the zoomHandler to prevent default action
@@ -343,7 +344,8 @@ export default class App{
                     this.render();
 
                     this.action = "DOT"
-
+                    clearSelection();
+                    
                     break;
 
                 //Right click
@@ -459,7 +461,12 @@ export default class App{
         }
     }
     
-
+    //If we are placing a dot, prevent text selection/highlighting
+    highlightHandler(event){
+        if (this.action === "DOT"){
+            event.preventDefault();
+        }
+    }
     
 }
 
@@ -487,4 +494,25 @@ function canvasToClip(canvasCoords){
    
     return [((-CANVAS_WIDTH) + 2*canvasCoords[0])/CANVAS_WIDTH,
                 ((CANVAS_HEIGHT) - 2*canvasCoords[1])/CANVAS_HEIGHT]
+}
+
+
+function clearSelection() {
+    var sel;
+    if ( (sel = document.selection) && sel.empty ) {
+        sel.empty();
+    } else {
+        if (window.getSelection) {
+            window.getSelection().removeAllRanges();
+        }
+        var activeEl = document.activeElement;
+        if (activeEl) {
+            var tagName = activeEl.nodeName.toLowerCase();
+            if ( tagName == "textarea" ||
+                    (tagName == "input" && activeEl.type == "text") ) {
+                // Collapse the selection to the end
+                activeEl.selectionStart = activeEl.selectionEnd;
+            }
+        }
+    }
 }
