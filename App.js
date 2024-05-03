@@ -5,6 +5,7 @@ import graham from "./Algorithms/Graham.js";
 
 import Graphical from "./Graphical/Graphical.js";
 
+const POINT_RANGE = 10;
 
 let currentCanvasCoords;
 let CANVAS_WIDTH, CANVAS_HEIGHT;
@@ -162,11 +163,26 @@ export default class App{
         [this.hull, this.frames] = this.algorithm(allPoints)
     }
 
-    generateGaussian(n=1000, range=1){
+    generateGaussian(event){
+        event.preventDefault();
+
+        let n = event.target.elements.gaussianNumber.value;
+        let range = POINT_RANGE;
+
+        document.getElementById("gaussianNumber").value = "";
+
         this.addPoints(generatePointsGuassian(n, range));
         this.render();
     }
-    generateUniform(n=1000, range=1){
+    generateUniform(event){
+        event.preventDefault();
+
+        let n = event.target.elements.uniformNumber.value;
+        let range = POINT_RANGE;
+
+        document.getElementById("uniformNumber").value = "";
+
+
         this.addPoints(generatePointsUniform(n, range));
         this.render();
     }
@@ -252,8 +268,8 @@ export default class App{
         document.getElementById("-speed").addEventListener(("click"), () => this.decreaseAnimationSpeed());
 
     
-        document.getElementById("generateGaussian").addEventListener("click", () => this.generateGaussian());
-        document.getElementById("generateUniform").addEventListener("click", () => this.generateUniform());
+        document.getElementById("generateGaussian").addEventListener("submit", (event) => this.generateGaussian(event));
+        document.getElementById("generateUniform").addEventListener("submit", (event) => this.generateUniform(event));
         document.getElementById("addPoint").addEventListener("submit", (event) => this.addPointByForm(event));
         document.getElementById("clear").addEventListener("click", () => this.clearScreen());
     }

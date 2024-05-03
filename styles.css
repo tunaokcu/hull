@@ -7,7 +7,7 @@ width: 800px;        /* We need to set the width whenever we float an element */
 
 .sidebar-one {
 float: left;         /* This causes the sidebar to move to the left */
-width: 400px;        /* We need to set the width whenever we float an element */
+width: 700px;        /* We need to set the width whenever we float an element */
 }
 
 button {

@@ -53,17 +53,34 @@
     <button id="-speed" style="display:none">-Speed</button>
     
     <br>
-    <button id="generateGaussian">Generate Gaussian</button>
-    <button id="generateUniform">Generate Uniform</button>
+    <br>
+
+    <form id="generateGaussian">
+      <label for="number">Number:</label>
+      <input type="number" id="gaussianNumber" name="gaussianNumber" required style="width: 70px">
+      <button type="submit">Generate Gaussian</button>
+    </form>
+
+    <form id="generateUniform">
+      <label for="number">Number:</label>
+      <input type="number" id="uniformNumber" name="uniformNumber" required style="width: 70px">
+      <button type="submit">Generate Uniform</button>
+    </form>
+
+    <br>
+
     <form id="addPoint">
       <label for="xCoord">X:</label>
-      <input type="number" id="xCoord" name="xCoord" required>
+      <input type="number" id="xCoord" name="xCoord" required style="width: 70px">
 
       <label for="yCoord">Y:</label>
-      <input type="number" id="yCoord" name="yCoord" required>
+      <input type="number" id="yCoord" name="yCoord" required style="width: 70px">
 
       <button type="submit">Add Point</button>
     </form>
+
+    <br>
+
     <button id="clear">Clear Screen</button>
   </div>
 
