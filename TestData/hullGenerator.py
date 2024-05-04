@@ -22,12 +22,12 @@ def testForNpoints(n=10):
     #printFormatted(input)
     if len(groundTruth) != len(output):
         print("Sizes of hulls not equal")
-        return 
+        return False  
 
     for i in range(len(groundTruth)):
         if groundTruth[i] != output[i]:
             print(f"Output at {i} differs")
-            return 
+            return False
         
 def printFormatted(points):
     for point in points:
@@ -40,7 +40,11 @@ def hullOracle(points):
     #This mess parses the return value of hull    
     return sorted(list(map(lambda x: list(map(lambda a: int(a), x.split())), hull)))
 
+def test(pointCount, testCount):
+    for i in range(testCount):
+        if testForNpoints(pointCount) == False:
+            return
+    
+    print("All tests successful")
 
-
-
-testForNpoints(100)
+test(3, 100)
