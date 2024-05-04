@@ -1,4 +1,4 @@
-import { generatePointsUniform } from "../Helper/Distributions.js";
+import { generateIntPointsUniform, generatePointsUniform } from "../Helper/Distributions.js";
 import {onOrLeft, right, det, left} from "./Geometry.js";
 
 let EPSILON = 0.00001;//Number.MIN_VALUE;
@@ -108,3 +108,7 @@ function findPointWithMaxX(points){
 function pointEquals(p, q){
     return (p[0] === q[0] && p[1] === q[1]);
 }
+
+
+let testVals = generateIntPointsUniform(10, 10);
+console.log(quickhull(testVals));
