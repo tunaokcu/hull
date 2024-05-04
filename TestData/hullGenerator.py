@@ -43,10 +43,10 @@ def hullOracle(points):
     return sorted(list(map(lambda x: list(map(lambda a: float(a), x.split())), hull)))
 
 def test(pointCount, testCount):
-    for i in range(testCount):
+    for _ in range(testCount):
         if testForNpoints(pointCount) == False:
             return
     
     print("All tests successful")
 
-test(10, 1);
+test(100, 10);

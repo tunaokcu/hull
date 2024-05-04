@@ -1,5 +1,4 @@
-import { generateIntPointsUniform, generatePointsUniform } from "../Helper/Distributions.js";
-import {onOrLeft, right, det, left, angle} from "./Geometry.js";
+import {det, left, angle} from "./Geometry.js";
 
 let EPSILON = 0.00001;//Number.MIN_VALUE;
 
@@ -13,9 +12,6 @@ export default function quickhull(points)
     let S2 = pointsToTheLeft(points, r0, l0);
 
     let result = [l0, ...quickhullContinuation(S1, l0, r0)].concat([r0, ...quickhullContinuation(S2, r0, l0)]);
-
-    //To see if the hull is correct WHEN the dupes are eliminated
-    //result = [...new Set(result)];
 
     return [result, []]
 }
@@ -67,12 +63,8 @@ function pointsToTheLeft(arr, p, q){
     return arr.filter((point) => left(p, q, point))
 }
 
-function pointsToTheRight(arr, p, q){
-    return arr.filter((point) => right(p, q, point))
-}
-
 function removePoint(points, pointToRemove){
-    if (points != null && points.length > 1){
+    if (points != null && points.length >= 1){
         return points.filter(point => !pointEquals(point, pointToRemove));
     }
     return points;
@@ -110,5 +102,3 @@ function findPointWithMaxX(points){
 function pointEquals(p, q){
     return (p[0] === q[0] && p[1] === q[1]);
 }
-
-//quickhull(generatePointsUniform(10, 10));
