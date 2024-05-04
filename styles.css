@@ -13,3 +13,15 @@ width: 700px;        /* We need to set the width whenever we float an element */
 button {
     margin-bottom: 5px;    
 }
+
+.actionsLog {
+    height: 200px; 
+    overflow-y: auto; /* Enable vertical scrollbar if content overflows */
+    border: 1px solid #ccc;
+    padding: 10px;
+    border: 10px solid #ccc;
+    border-radius: 5px;
+}
+.actions-log-item {
+    margin-bottom: 5px;
+}
