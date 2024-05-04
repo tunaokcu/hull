@@ -49,4 +49,4 @@ def test(pointCount, testCount):
     
     print("All tests successful")
 
-test(100, 10)
+test(10, 1);

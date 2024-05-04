@@ -12,7 +12,7 @@ export default function quickhull(points)
     let S1 = pointsToTheLeft(points, l0, r0);
     let S2 = pointsToTheLeft(points, r0, l0);
 
-    let result = quickhullContinuation(S1, l0, r0).concat(quickhullContinuation(S2, r0, l0)).concat([l0, r0]);
+    let result = [l0, ...quickhullContinuation(S1, l0, r0)].concat([r0, ...quickhullContinuation(S2, r0, l0)]);
 
     //To see if the hull is correct WHEN the dupes are eliminated
     //result = [...new Set(result)];
@@ -32,7 +32,7 @@ function quickhullContinuation(S, l, r){
         
         //console.log(l, r, h, S1, S2);
         //QUICKHULL(S(1), l, h) + (QUICKHULL(S(2), h, r) -h)
-        return quickhullContinuation(S1, l, h).concat(quickhullContinuation(S2, h, r)).concat([h]);
+        return [...quickhullContinuation(S1, l, h), h].concat(quickhullContinuation(S2, h, r));
     }
     /*
     //S === {l, r} represented in code

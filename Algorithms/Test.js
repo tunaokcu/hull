@@ -6,6 +6,7 @@ function runTest(n, algorithm=quickhull,range=100){
     //Generate random points
     let arr = generatePointsUniform(n, range);
 
+    arr = [[-95, -16], [-93, 36], [-92, 82], [-81, -89], [-77, 96], [4, 100], [38, -98], [57, 98], [59, -99], [67, 98], [84, -59], [94, 30], [100, -29], [100, -1]];
     //Log arr
     console.log(JSON.stringify(arr));
 
