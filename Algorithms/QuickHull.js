@@ -8,6 +8,8 @@ export default function quickhull(points)
     let l0 = findPointWithMinX(points);
     let r0 = findPointWithMaxX(points);
 
+    points = removePoint(removePoint(points, l0), r0);
+    //pointsToTheLeft is buggy and doesn't remove l0, r0
     let S1 = pointsToTheLeft(points, l0, r0);
     let S2 = pointsToTheLeft(points, r0, l0);
 

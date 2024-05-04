@@ -3,14 +3,14 @@ from driver import runJS, jsonToList
 import os
 import math
 
-def testForNpoints(n=10):
+def testForNpoints(n=10, log=False):
     #Reliably find correct relative path
     dirname = os.path.dirname(__file__)
     parentDir = os.path.abspath(os.path.join(dirname, '..'))
     filename = os.path.join(parentDir, "Algorithms\Test.js")
 
     #Catch output
-    [input, output] = runJS(filename, n).split("\n")
+    [input, output] = runJS(filename, n, log).split("\n")
 
     #Parse to list
     [input, output] = [jsonToList(input), jsonToList(output)]
@@ -18,17 +18,21 @@ def testForNpoints(n=10):
     #Try using pyhull.convex_hull, our ground truth/oracle
     groundTruth = hullOracle(input)
 
-    print(output, "\n", groundTruth)
+    if (log):
+        print("here")
+        print(output, "\n", groundTruth)
     
     #printFormatted(input)
     if len(groundTruth) != len(output):
         print("Sizes of hulls not equal")
+        print(output, "\n", groundTruth)
         return False  
 
     for i in range(len(groundTruth)):
         #For robustness
         if not (math.isclose(groundTruth[i][0], output[i][0]) and math.isclose(groundTruth[i][1], output[i][1])):
             print(f"Output at {i} differs")
+            print(output, "\n", groundTruth)
             return False
         
 def printFormatted(points):
@@ -42,11 +46,11 @@ def hullOracle(points):
     #This mess parses the return value of hull    
     return sorted(list(map(lambda x: list(map(lambda a: float(a), x.split())), hull)))
 
-def test(pointCount, testCount):
+def test(pointCount, testCount, log=False):
     for _ in range(testCount):
-        if testForNpoints(pointCount) == False:
+        if testForNpoints(pointCount, log) == False:
             return
     
     print("All tests successful")
 
-test(100, 10);
+test(1000, 100, False);
