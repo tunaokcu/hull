@@ -3,6 +3,7 @@ import {onOrLeft, right, det, left} from "./Geometry.js";
 
 let EPSILON = 0.00001;//Number.MIN_VALUE;
 
+//https://en.wikipedia.org/wiki/Quickhull
 export default function quickhull(points)
 { 
     let l0 = findPointWithMinX(points);
@@ -14,7 +15,7 @@ export default function quickhull(points)
     let result = quickhullContinuation(S1, l0, r0).concat(quickhullContinuation(S2, r0, l0)).concat([l0, r0]);
 
     //To see if the hull is correct WHEN the dupes are eliminated
-    result = [...new Set(result)];
+    //result = [...new Set(result)];
 
     return [result, []]
 }
