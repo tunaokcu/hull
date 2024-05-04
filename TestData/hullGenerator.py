@@ -15,7 +15,6 @@ def testForNpoints(n=10):
     [input, output] = [jsonToList(input), jsonToList(output)]
 
     #Try using pyhull.convex_hull, our ground truth/oracle
-    #?????????? through a cursory testing I have found out that this module gives incorrect outputs
     groundTruth = hullOracle(input)
 
     print(output, "\n", groundTruth)

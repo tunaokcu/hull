@@ -18,7 +18,7 @@ export default class App{
     constructor(){
         this.points = [];
         this.hull = [];
-        this.algorithm = jarvis;
+        this.algorithm = quickhull;
 
         this.animated = false; //in animated mode
         this.animationPlaying = false; //animation is playing(not paused)
