@@ -15,4 +15,8 @@ export default class ActionsLog{
         // Scroll to the bottom after adding a new action
         this.actionsLog.scrollTop = this.actionsLog.scrollHeight;
     }
+
+    clearLog(){
+        this.actionsLog.innerHTML = '';
+    }
 }

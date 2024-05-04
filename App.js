@@ -4,6 +4,7 @@ import {quickhull, mergehull, jarvis} from "./Algorithms/Algorithms.js";
 import graham from "./Algorithms/Graham.js";
 
 import Graphical from "./Graphical/Graphical.js";
+import ActionsLog from "./ActionsLog.js";
 
 const POINT_RANGE = 10;
 
@@ -141,6 +142,10 @@ export default class App{
         //Add the points to the already existing array and calculate the new hull.
         this.points = this.points.concat(addedPoints)
         this.calculateHull();
+
+        for (const point of addedPoints){
+            this.LOG.addAction(`Added (${point[0].toFixed(2)}, ${point[1].toFixed(2)})`);
+        }
     }
 
     //Calculate and rerender hull. Calculate frames as well.
@@ -252,7 +257,10 @@ export default class App{
     }
 
     clearScreen(){
-        this.points = []
+        this.LOG.clearLog();
+        this.LOG.addAction("Cleared screen. ");
+
+        this.points = [];
         this.hull = [];
         this.state = [];
         this.handleSkipforward();
@@ -260,6 +268,8 @@ export default class App{
 
 
     initUI(){
+        this.LOG = new ActionsLog("actionsLog");
+
         document.getElementById("startAnimation").addEventListener(("click"), () => this.handleStartAnimation());
         document.getElementById("pauseAnimation").addEventListener(("click"), () => this.handlePauseAnimation());
         document.getElementById("continueAnimation").addEventListener(("click"), () => this.handleContinueAnimation());
