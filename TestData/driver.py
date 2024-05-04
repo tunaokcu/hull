@@ -1,7 +1,7 @@
 import subprocess
 import simplejson as json
 
-def runJS(path="../Algorithms/Test.js", n=10, log=False):
+def runJS(path="../Algorithms/Test.js", n=10, log=True):
     #Prepare the command
     commandToRun = ["node", path, str(n)]
 

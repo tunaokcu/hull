@@ -1,6 +1,7 @@
 from pyhull.convex_hull import ConvexHull, qconvex
 from driver import runJS, jsonToList
 import os
+import math
 
 def testForNpoints(n=10):
     #Reliably find correct relative path
@@ -25,7 +26,8 @@ def testForNpoints(n=10):
         return False  
 
     for i in range(len(groundTruth)):
-        if groundTruth[i] != output[i]:
+        #For robustness
+        if not (math.isclose(groundTruth[i][0], output[i][0]) and math.isclose(groundTruth[i][1], output[i][1])):
             print(f"Output at {i} differs")
             return False
         
@@ -38,7 +40,7 @@ def hullOracle(points):
     hull = qconvex("p", points)[2:]
 
     #This mess parses the return value of hull    
-    return sorted(list(map(lambda x: list(map(lambda a: int(a), x.split())), hull)))
+    return sorted(list(map(lambda x: list(map(lambda a: float(a), x.split())), hull)))
 
 def test(pointCount, testCount):
     for i in range(testCount):
@@ -47,4 +49,4 @@ def test(pointCount, testCount):
     
     print("All tests successful")
 
-test(3, 100)
+test(100, 10)

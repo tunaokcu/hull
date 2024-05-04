@@ -4,7 +4,7 @@ import quickhull from "./QuickHull.js";
 
 function runTest(n, algorithm=quickhull,range=100){
     //Generate random points
-    let arr = generateIntPointsUniform(n, range);
+    let arr = generatePointsUniform(n, range);
 
     //Log arr
     console.log(JSON.stringify(arr));

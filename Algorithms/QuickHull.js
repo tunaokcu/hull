@@ -1,5 +1,5 @@
 import { generateIntPointsUniform, generatePointsUniform } from "../Helper/Distributions.js";
-import {onOrLeft, right, det, left} from "./Geometry.js";
+import {onOrLeft, right, det, left, angle} from "./Geometry.js";
 
 let EPSILON = 0.00001;//Number.MIN_VALUE;
 
@@ -21,17 +21,16 @@ export default function quickhull(points)
 }
 
 function quickhullContinuation(S, l, r){
-    if (S.length == 0){
-        return [];
+    if (S.length <= 1){
+        return S;
     }else{
         let h = furthest(S, l, r);
+        S = removePoint(S, h);
 
         let S1 = pointsToTheLeft(S, l, h);
-
-
         let S2 = pointsToTheLeft(S, h, r);
         
-
+        //console.log(l, r, h, S1, S2);
         //QUICKHULL(S(1), l, h) + (QUICKHULL(S(2), h, r) -h)
         return quickhullContinuation(S1, l, h).concat(quickhullContinuation(S2, h, r)).concat([h]);
     }
@@ -51,7 +50,7 @@ function furthest(points, l, r){
         let curPoint = points[i];
         let curArea = det(l, r, curPoint);
 
-        if (curArea > largestArea){
+        if (curArea > largestArea || (curArea == largestArea && angle(curPoint, l, r) > angle(h, l, r))){
             largestArea = curArea;
             h = curPoint;
         }
@@ -60,8 +59,11 @@ function furthest(points, l, r){
     return h;
 }
 
-//Points in arr on or to the left of the line p-q
 function pointsToTheLeft(arr, p, q){
+    if (arr.length == 0 || pointEquals(p, q)){
+        return [];
+    }
+
     return arr.filter((point) => left(p, q, point))
 }
 
@@ -109,6 +111,4 @@ function pointEquals(p, q){
     return (p[0] === q[0] && p[1] === q[1]);
 }
 
-
-let testVals = generateIntPointsUniform(10, 10);
-console.log(quickhull(testVals));
+//quickhull(generatePointsUniform(10, 10));
