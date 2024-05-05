@@ -1,11 +1,30 @@
 //TODO TEST
 
-export {onOrLeft, left, right, crossProduct, det, distance, angle}
+export {isInternalTo, centroid, onOrLeft, left, right, crossProduct, det, distance, angle}
 
 function onOrLeft(p1, p2, p3) {
     return crossProduct(p1, p2, p3) >= 0;
 }
 
+//TODO
+function isInternalTo(point, polygon){
+
+}
+
+function centroid(arr){
+    let n = arr.length;
+    let centroid = [0.0, 0.0];
+
+    for (const point of arr){
+        centroid[0] += point[0];
+        centroid[1] += point[1];
+    }
+
+    centroid[0] /= n;
+    centroid[1] /= n;
+
+    return centroid;
+}
 
 function left(p1, p2, p3) {
     return crossProduct(p1, p2, p3) > 0;

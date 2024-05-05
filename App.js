@@ -5,6 +5,7 @@ import graham from "./Algorithms/Graham.js";
 
 import Graphical from "./Graphical/Graphical.js";
 import ActionsLog from "./ActionsLog.js";
+import circle from "./Helper/Circle.js";
 
 const POINT_RANGE = 10;
 
@@ -218,11 +219,10 @@ export default class App{
         return clipCoords[0] >= -1 && clipCoords[0] <= 1 && clipCoords[1] >= -1 && clipCoords[1] <= 1;
     }
 
-
-
-
-
-
+    placeCircleAt(center, r = 0.5){
+        this.addPoints(circle(center, r));
+        this.render();
+    }
 
 
     zoomIn(){
@@ -326,11 +326,14 @@ export default class App{
         currentCanvasCoords = canvas.getBoundingClientRect();    
         document.addEventListener("scroll", () => (currentCanvasCoords = canvas.getBoundingClientRect()));
     
-        // Dot placement, pan handler: mousedown, mousemove, mouseup
+        //Dot placement, pan handler: mousedown, mousemove, mouseup
         canvas.addEventListener("mousedown", (e) => this.mousedownHandler(e)); 
         document.addEventListener("mousemove", (e) => this.mousemoveHandler(e)); 
         document.addEventListener("mouseup", (e) => this.mouseupHandler(e)); 
         document.addEventListener("selectstart", (e) => this.highlightHandler(e));
+
+        //Key release handlers(circle placement)
+        document.addEventListener("keyup", (e) => this.keyreleaseHandler(e));
     
         //Zoom handler
         document.addEventListener("wheel", (e) => this.zoomHandler(e), {passive: false}); //the {passive: false} part is necessary for the zoomHandler to prevent default action
@@ -345,6 +348,22 @@ export default class App{
         document.addEventListener('contextmenu', (e) => { 
             e.preventDefault();
           }, false);
+    }
+
+    keyreleaseHandler(event){
+        //Get coords
+        let clipCoords = this.lastMousePosition;
+        
+        if(!clipCoords){
+            return;
+        }
+
+        clipCoords = parseFloat(clipCoords);
+
+        switch(event.keyCode){
+            case 67: //c -> circle placement
+                this.placeCircleAt(clipCoords);
+        }
     }
 
     mousedownHandler(event){

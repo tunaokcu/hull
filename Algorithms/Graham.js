@@ -16,21 +16,6 @@ export default function graham(pointsArr){
     
 }
 
-function centroidOfPoints(arr){
-    let n = arr.length;
-    let centroid = [0.0, 0.0];
-
-    for (const point of arr){
-        centroid[0] += point[0];
-        centroid[1] += point[1];
-    }
-
-    centroid[0] /= n;
-    centroid[1] /= n;
-
-    return centroid;
-}
-
 
 function shiftPoints(points, referencePoint){
     return points.map((point) => [point[0]-referencePoint[0], point[1]-referencePoint[1]])
