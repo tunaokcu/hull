@@ -1,80 +1,52 @@
-import DCLL from "../DS/DCLL.js";
-import { findLowestAndHighest } from "./Utility.js";
+import {left, right} from './Geometry.js';
 
-export default function graham(pointsArr){
-    //Find centroid
-    let centroid = centroidOfPoints(pointsCopy);
+export default function graham(points){
+    if (points.length < 3) return;
 
-    //Shift according to centroid
-    let shiftedPoints = shiftPoints(pointsArr, centroid);
-
-    //Sort lexicographically on 1)polar angle 2)distance
-    lexicographicSort(shiftedPoints);
-
-    let pointsList = new DCLL(shiftPoints);
-
-    
-}
-
-
-function shiftPoints(points, referencePoint){
-    return points.map((point) => [point[0]-referencePoint[0], point[1]-referencePoint[1]])
-}
-
-//This function MUTATES the array
-function lexicographicSort(points){
-    /*
-        A reference for JS's sort function:
-        given a, b 
-        return -1 if a < b 
-                0 if a == b
-                1 if a > b
-
-        In our case:
-            -1 if polarAngle(a) < polarAngle(b) or (polarAngle(a) == polarAngle(b) and euclideanDistance(a) < euclideanDistance(b))
-            0 if polarAngle(a) == polarAngle(b) and euclideanDistance(a) == euclideanDistance(b)
-            1 if polarAngle(a) > polarAngle(b)  or (polarAngle(a) == polarAngle(b) and euclideanDistance(a) > euclideanDistance(b))
-    */
-
-    let sortFunction = (a, b) => {
-        if (polarAngle(a) < polarAngle(b)){
-            return -1;
+    let leftmost = points[0];
+    for (let i = 1; i < points.length; i++){
+        if (points[i][0] < leftmost[0]){
+            leftmost = points[i];
         }
-        if (polarAngle(a) > polarAngle(b)){
-            return 1; 
-        }
-        
-        //Polar angles are equal
-        if (euclideanDistance(a) < euclideanDistance(b)){
-            return -1;
-        }    
-        if (euclideanDistance(a) > euclideanDistance(b)){
-            return 1;
-        }   
-
-        //The distances are equal as well
-        return 0;
     }
 
-    //No need to return anything as we are mutating the array directly
-    points.sort(sortFunction);
-}      
+    let rightmost = points[0];
+    for (let i = 1; i < points.length; i++){
+        if (points[i][0] > rightmost[0]){
+            rightmost = points[i];
+        }
+    }
 
+    let above = [];
+    let below = [];
 
-//TODO
-function polarAngle(p){
-    return positivexAngle([0.0, 0.0], p);
-}
+    for (let i = 0; i < points.length; i++){
+        if (left(leftmost, rightmost, points[i])){
+            above.push(points[i]);
+        } else if (right(leftmost, rightmost, points[i])){
+            below.push(points[i]);
+        }
+    }
+    above.push(rightmost);
+    below.push(leftmost);
+    above.sort((a, b) => a[0] - b[0]);
+    below.sort((a, b) => b[0] - a[0]);
 
-function positivexAngle(start, end){
-    let vectorY = end[1] - start[1];
-    let vectorX = end[0] - start[0];
+    let upperhull = [leftmost, above[0]];
+    for (let i = 1; i < above.length; i++){
+        while (upperhull.length >= 2 && left(upperhull[upperhull.length - 2], upperhull[upperhull.length - 1], above[i])){
+            upperhull.pop();
+        }
+        upperhull.push(above[i]);
+    }
 
-    return Math.atan2(vectorY, vectorX);
-}
+    let lowerhull = [rightmost, below[0]];
+    for (let i = 1; i < below.length; i++){
+        while (lowerhull.length >= 2 && left(lowerhull[lowerhull.length - 2], lowerhull[lowerhull.length - 1], below[i])){
+            lowerhull.pop();
+        }
+        lowerhull.push(below[i]);
+    }
 
-
-//!OBVIOUSLY WE DONT NEED SQRT FOR CORRECT COMPARISON, BUT JUST IN CASE WE END UP USING THIS SOMEWHERE ELSE
-function euclideanDistance(p){
-    return Math.sqrt(Math.pow(p[0], 2) + Math.pow(p[1], 2))
+    return [upperhull.concat(lowerhull), []];
 }
