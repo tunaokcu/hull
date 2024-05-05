@@ -7,7 +7,7 @@ import Graphical from "./Graphical/Graphical.js";
 import ActionsLog from "./ActionsLog.js";
 import circle from "./Helper/Circle.js";
 
-const POINT_RANGE = 10;
+const POINT_RANGE = 1;
 
 let currentCanvasCoords;
 let CANVAS_WIDTH, CANVAS_HEIGHT;
@@ -20,7 +20,7 @@ export default class App{
     constructor(){
         this.points = [];
         this.hull = [];
-        this.algorithm = quickhull;
+        this.algorithm = graham;
 
         this.animated = false; //in animated mode
         this.animationPlaying = false; //animation is playing(not paused)
