@@ -352,13 +352,14 @@ export default class App{
 
     keyreleaseHandler(event){
         //Get coords
-        let clipCoords = this.lastMousePosition;
-        
+        let clipCoords = this.mouselocationForCircle;
+        this.mouselocationForCircle = clipCoords;
+
         if(!clipCoords){
             return;
         }
 
-        clipCoords = parseFloat(clipCoords);
+        clipCoords = [parseFloat(clipCoords[0]), parseFloat(clipCoords[1])];
 
         switch(event.keyCode){
             case 67: //c -> circle placement
@@ -367,8 +368,9 @@ export default class App{
     }
 
     mousedownHandler(event){
-    
         let clipCoords = clientToClip(event);
+        this.mouselocationForCircle = clipCoords;
+
         if (!clipCoords){
             return;
         }
@@ -376,6 +378,7 @@ export default class App{
 
         let clipCoordsOriginal = clipCoords;
         clipCoords = this.calcDotPlacement(clipCoords);
+        this.mouselocationForCircle = clipCoords;
 
         if (this.withinClip(clipCoords)){
             switch (event.button){
@@ -410,12 +413,14 @@ export default class App{
 
     mousemoveHandler(event){
         let clipCoords = clientToClip(event);
+        this.mouselocationForCircle = clipCoords;
         if (!clipCoords){
             return;
         }
 
         let clipCoordsOriginal = clipCoords;
         clipCoords = this.calcDotPlacement(clipCoords);
+        this.mouselocationForCircle = clipCoords;
 
         switch (this.action){
             //Nothing
@@ -459,6 +464,7 @@ export default class App{
 
         let clipCoordsOriginal = clipCoords;
         clipCoords = this.calcDotPlacement(clipCoords);
+        this.mouselocationForCircle = clipCoords;
 
         switch (this.action){
             //Nothing
