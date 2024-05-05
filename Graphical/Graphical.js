@@ -8,13 +8,13 @@ const VECTOR_DIMENSION = 2;
 //We could use WebGL or plain JS canvas functions here
 export default class Graphical{
     TRIAL_LINE_COLOR  = [0, 0, 1, 1];
-    FINAL_LINE_COLOR =  [1, 0, 0, 1];
-    DOT_COLOR = [0, 1, 0, 1];
-    DRAGGED_POINT_COLOR = [190/255.0,111/255.0,234/255.0, 1]
+    FINAL_LINE_COLOR =  [0.518 , 0.0, 0.678, 1];
+    DOT_COLOR = [0.404, 0.929, 0.263, 1];
+    DRAGGED_POINT_COLOR = [0,0,1, 0.8]
     COORDINATE_COLOR = [0, 0, 0, 1];
 
 
-    BACKGROUND_COLOR = [0.8, 0.8, 0.8, 1.0]
+    BACKGROUND_COLOR = [0.992, 1, 0.961, 1.0]
     
     constructor(canvasId="gl-canvas"){
         this.initializegl(canvasId);
