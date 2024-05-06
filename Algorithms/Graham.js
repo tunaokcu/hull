@@ -28,27 +28,50 @@ export default function graham(points){
         }
     }
   
+    above.sort((a, b) => a[0] == b[0] ? b[1] - a[1] : a[0] - b[0]);
+    below.sort((a, b) => b[0] == a[0] ? a[1] - b[1] : b[0] - a[0]);
+
     above.push(rightmost);
     below.push(leftmost);
-    above.sort((a, b) => a[0] - b[0]);
-    below.sort((a, b) => b[0] - a[0]);
+
+    for(let i = 0; i < above.length - 1; i++){
+        while( above[i][0] == above[i+1][0] && above[i][1] == above[i+1][1]){
+            above.splice(i+1, 1);
+            i--;
+        }
+    }
+
+    for(let i = 0; i < below.length - 1; i++){
+        while( below[i][0] == below[i+1][0] && below[i][1] == below[i+1][1]){
+            below.splice(i+1, 1);
+            i--;
+        }
+    }
+    
 
     let upperhull = [leftmost, above[0]];
+    let currentSize = 2;
     for (let i = 1; i < above.length; i++){
-        while (upperhull.length >= 2 && left(upperhull[upperhull.length - 2], upperhull[upperhull.length - 1], above[i])){
+        while (currentSize >= 2 && left(upperhull[ currentSize - 2], upperhull[ currentSize - 1], above[i])){
             upperhull.pop();
+            currentSize--;
         }
         upperhull.push(above[i]);
+        currentSize++;
     }
 
     let lowerhull = [rightmost, below[0]];
+    currentSize = 2;
     for (let i = 1; i < below.length; i++){
-        while (lowerhull.length >= 2 && left(lowerhull[lowerhull.length - 2], lowerhull[lowerhull.length - 1], below[i])){
+        while (currentSize >= 2 && left(lowerhull[ currentSize - 2], lowerhull[ currentSize - 1], below[i])){
             lowerhull.pop();
+            currentSize--;
         }
         lowerhull.push(below[i]);
+        currentSize++;
     }
 
+    upperhull.pop();
     let hull = upperhull.concat(lowerhull);
     return [hull, []];
 }
