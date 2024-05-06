@@ -1,7 +1,0 @@
-Output:       [[31, 100], [44, 98], [57, 96], [70, -80]]
-Ground Truth:  [[31.0, 100.0], [57.0, 96.0], [70.0, -80.0]]
-Sizes of hulls not equal
-
-We have an extra [44, 98]
-
-See bug.png

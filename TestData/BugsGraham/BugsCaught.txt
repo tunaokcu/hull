@@ -1,0 +1,4 @@
+Output:       [[31,100],[31,100],[44,98],[57,96],[70,-80],[70,-80]]
+Ground Truth:  [[31.0, 100.0], [57.0, 96.0], [70.0, -80.0]]
+
+Not only are there duplicates, but also colinear points get included instead of just the extremes.

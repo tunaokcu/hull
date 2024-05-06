@@ -24,6 +24,11 @@ const ALGORITHMS = {
         algorithm: graham,
         description: `<b>Graham's scan</b> is an optimal convex hull algorithm with a running time of <b>O(nlogn)</b> where n is the number of total points.`,
         title: `Graham's scan`
+    },
+    quickhull: {
+        algorithm: quickhull,
+        description: `<b>Quickhull</b> is a convex hull algorithm inspired by quicksort with a worst case running time of <b>O(n^2)</b> where n is the number of total points. It is, however, optimal on average.`,
+        title: `Quickhull`
     }
 }
 

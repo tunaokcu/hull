@@ -15,7 +15,7 @@ export function findLowestAndHighest(points){
        if (points[i][1] > points[highestPoint][1]){ 
            highestPoint = i; 
        }
-       else if (points[i][1] == points[highestPoint][1] && points[i][0] > points[highestPoint][0]){
+       else if (points[i][1] == points[highestPoint][1] && points[i][0] < points[highestPoint][0]){ //leftmost highest point
            highestPoint = i;
        }
     }
@@ -27,4 +27,5 @@ export function findLowestAndHighest(points){
 function copy2DArr(arr){
     return arr.map((item) => item.slice());
 }
+
 

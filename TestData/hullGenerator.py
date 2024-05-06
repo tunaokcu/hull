@@ -13,7 +13,8 @@ def testForNpoints(algorithm, n=10, log=False):
     filename = os.path.join(parentDir, "Algorithms\Test.js")
 
     #Catch output
-    [input, output] = runJS(filename, algorithm, n, log).split("\n")
+    unprocessedOutput =  runJS(filename, algorithm, n, log).strip().split("\n")
+    [input, output] = [unprocessedOutput[0], unprocessedOutput[-1]]
 
     #Parse to list
     [input, output] = [jsonToList(input), jsonToList(output)]
@@ -83,10 +84,12 @@ def arrayTest(array, algorithm):
 
     #Run the command and capture output
     output = subprocess.run(commandToRun, capture_output=True, text=True)
+
     output = output.stdout.strip()
+    output = output.split("\n")[-1]
 
     output = jsonToList(output)
-
+    
     #Try using pyhull.convex_hull, our ground truth/oracle
     groundTruth = hullOracle(array)
 
@@ -98,4 +101,5 @@ testVal = [[-97, -58], [-90, 1], [-79, 90], [-77, 93], [-65, -88], [-29, -97], [
 #found using delta debugging
 minimalTestVal = [[31, 100], [44, 98], [57, 96], [70, -80]]
 
-test("graham", 10, 10, log=False)
+#test("graham", 10, 10, log=False)
+test("jarvis", 1000, 10)

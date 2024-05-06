@@ -38,7 +38,7 @@ export default function jarvis(points){
                  lowestAngledPoint = i;
                  //We keep the point         
              }
-             else if (lowestAngledPoint != null && positivexAngle(points[currentPoint], points[i]) == positivexAngle(points[currentPoint], points[lowestAngledPoint]) && distance(points[currentPoint], points[i]) < distance(points[currentPoint], points[lowestAngledPoint]))
+             else if (lowestAngledPoint != null && positivexAngle(points[currentPoint], points[i]) == positivexAngle(points[currentPoint], points[lowestAngledPoint]) && distance(points[currentPoint], points[i]) > distance(points[currentPoint], points[lowestAngledPoint]))
              {
                  lowestAngledPoint = i
              }
@@ -59,14 +59,20 @@ export default function jarvis(points){
              if (i == currentPoint) { continue; }
 
              frames.push([...hull, points[i]])
-             if (negativexAngle(points[currentPoint], points[i]) >= 0 && (lowestAngledPoint == null ||  negativexAngle(points[currentPoint], points[i]) < negativexAngle(points[currentPoint], points[lowestAngledPoint]))){
+
+            /*
+            if (lowestAngledPoint == null || negativexAngle(points[currentPoint], points[i]) >= 0 && (lowestAngledPoint == null ||  negativexAngle(points[currentPoint], points[i]) < negativexAngle(points[currentPoint], points[lowestAngledPoint]))){
                  lowestAngledPoint = i;
                  //We keep the point          
-             }
-             else if (lowestAngledPoint != null && negativexAngle(points[currentPoint], points[i]) == negativexAngle(points[currentPoint], points[lowestAngledPoint]) && distance(points[currentPoint], points[i]) < distance(points[currentPoint], points[lowestAngledPoint]))
-             {
-                 lowestAngledPoint = i
-             }
+             }*/
+            if ((lowestAngledPoint == null ||  negativexAngle(points[currentPoint], points[i]) > negativexAngle(points[currentPoint], points[lowestAngledPoint]))){
+                lowestAngledPoint = i;
+                //We keep the point         
+            }
+             else if (lowestAngledPoint != null && negativexAngle(points[currentPoint], points[i]) == negativexAngle(points[currentPoint], points[lowestAngledPoint]) && distance(points[currentPoint], points[i]) > distance(points[currentPoint], points[lowestAngledPoint]))
+            {
+                lowestAngledPoint = i
+            }
          }
 
          currentPoint = lowestAngledPoint;
@@ -84,22 +90,14 @@ function positivexAngle(start, end){
     return Math.atan2(vectorY, vectorX);
 }
 
-
-function negativexAngle(start,end){
+function negativexAngle(start, end){
     let vectorY = end[1] - start[1];
     let vectorX = end[0] - start[0];
 
-    if (vectorY == 0) { 
-        if (vectorX > 0){
-            return Math.PI; 
-        }
-        else if (vectorX < 0 ){
-            return 0;
-        }
-    }
-
-    return Math.atan2(-vectorY, -vectorX);
+    return Math.atan2(-vectorY, vectorX);
 }
 
 
+
 export {positivexAngle, negativexAngle}
+
