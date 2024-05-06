@@ -6,14 +6,14 @@ from deltaDebugger import hullDebugger
 import json
 import subprocess
 
-def testForNpoints(n=10, log=False):
+def testForNpoints(algorithm, n=10, log=False):
     #Reliably find correct relative path
     dirname = os.path.dirname(__file__)
     parentDir = os.path.abspath(os.path.join(dirname, '..'))
     filename = os.path.join(parentDir, "Algorithms\Test.js")
 
     #Catch output
-    [input, output] = runJS(filename, n, log).split("\n")
+    [input, output] = runJS(filename, algorithm, n, log).split("\n")
 
     #Parse to list
     [input, output] = [jsonToList(input), jsonToList(output)]
@@ -65,9 +65,9 @@ def hullOracle(points):
     #This mess parses the return value of hull    
     return sorted(list(map(lambda x: list(map(lambda a: float(a), x.split())), hull)))
 
-def test(pointCount, testCount, log=False):
+def test(algorithm, pointCount, testCount, log=False):
     for _ in range(testCount):
-        if testForNpoints(pointCount, log) == False:
+        if testForNpoints(algorithm, pointCount, log) == False:
             return
     
     print("All tests successful")
@@ -98,4 +98,4 @@ testVal = [[-97, -58], [-90, 1], [-79, 90], [-77, 93], [-65, -88], [-29, -97], [
 #found using delta debugging
 minimalTestVal = [[31, 100], [44, 98], [57, 96], [70, -80]]
 
-print(arrayTest(minimalTestVal, "graham"))
+test("graham", 10, 10, log=False)

@@ -1,9 +1,9 @@
 import subprocess
 import simplejson as json
 
-def runJS(path="../Algorithms/Test.js", n=10, log=True):
+def runJS(path="../Algorithms/Test.js", algorithm="quickhull", n=10, log=True):
     #Prepare the command
-    commandToRun = ["node", path, str(n)]
+    commandToRun = ["node", path, algorithm, str(n)]
 
     #Run the command and capture output
     result = subprocess.run(commandToRun, capture_output=True, text=True)

@@ -1,8 +1,20 @@
 import { generateIntPointsUniform, generatePointsUniform } from "../Helper/Distributions.js";
 import jarvis from "./Jarvis.js";
 import quickhull from "./QuickHull.js";
+import graham from "./Graham.js";
+import mergehull from "./Mergehull.js";
 
-function runTest(n, algorithm=quickhull,range=100){
+function runTest(n, algoName="quickhull",range=100){
+    let algorithm;
+    let algorithms = {
+        jarvis: jarvis,
+        quickhull: quickhull,
+        graham: graham,
+        mergehull: mergehull
+    }
+
+    algorithm = algorithms[algoName];
+
     //Generate random points
     let arr = generatePointsUniform(n, range);
     
@@ -24,5 +36,7 @@ function lexicographicSort(arr){
     });
 }
 
-let commandLineArgs = parseInt(process.argv.slice(2));
-runTest(commandLineArgs);
+let algoName = process.argv[2];
+let n = parseInt(process.argv[3]);
+
+runTest(n, algoName);

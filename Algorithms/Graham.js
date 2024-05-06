@@ -27,6 +27,7 @@ export default function graham(points){
             below.push(points[i]);
         }
     }
+  
     above.push(rightmost);
     below.push(leftmost);
     above.sort((a, b) => a[0] - b[0]);
@@ -48,5 +49,6 @@ export default function graham(points){
         lowerhull.push(below[i]);
     }
 
-    return [upperhull.concat(lowerhull), []];
+    let hull = upperhull.concat(lowerhull);
+    return [hull, []];
 }
