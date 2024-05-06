@@ -34,8 +34,8 @@
     }
   </script>
 
-  <script type="module" src="index.js"></script>
   <!--<link rel="stylesheet" href="styles.css">-->
+  <script type="module" src="index.js"></script>
 
 </head>
 <body class="wrapper">
@@ -43,10 +43,25 @@
     <canvas id="gl-canvas" width="700" height="700"></canvas>
   </div>
   <div class="sidebar-one">
-    <p style="display:inline">Currently playing: </p><p style="display:inline" id="algorithmName"><b>Jarvis March</b></p>
-    <p id="algorithmInfo">
-      <b>Jarvis march</b>, also known as the <b>gift wrapping algorithm</b>, is an <b>O(nh)</b> time algorithm where n is the number of total points and h is the number of points on the hull.
-    </p>
+
+    <p style="display:inline">Currently playing: </p><p style="display:inline" id="algorithmName"></p>
+    <p id="algorithmInfo"></p>
+
+    <div id="button-group" class="button-group">
+      <input type="radio" id="jarvis" name="button-group"><label for="jarvis">Jarvis March</label>
+    
+      <input type="radio" id="graham" name="button-group"><label for="graham">Graham's Scan</label>
+      
+      <!--
+      <input type="radio" id="button3" name="button-group">
+      <label for="button3">Button 3</label>
+    
+      <input type="radio" id="button4" name="button-group">
+      <label for="button4">Button 4</label>
+      -->
+    </div>
+
+  
     <button id="startAnimation">Animate</button>
     <button id="continueAnimation" style="display:none">Continue</button>
     <button id="pauseAnimation" style="display:none">Pause</button>
@@ -93,4 +108,6 @@
 
 
 </body>
+
+
 </html>

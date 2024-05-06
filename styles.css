@@ -25,3 +25,30 @@ button {
 .actions-log-item {
     margin-bottom: 5px;
 }
+
+label {
+    user-select: none; /* Prevent label from being selectable */
+}
+
+.button-group {
+    display: flex;
+  }
+  
+  input[type="radio"] {
+    display: none; /* Hide the actual radio buttons */
+  }
+  
+  .button-group label {
+    display: block;
+    padding: 10px 20px;
+    margin-right: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+  
+  input[type="radio"]:checked + label {
+    background-color: #ccc;
+  }

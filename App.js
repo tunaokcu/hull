@@ -31,8 +31,11 @@ export default class App{
     points;
     hull;
     algorithm;
+    algoName;
     animated;
     constructor(){
+        this.algoName = "";
+
         this.points = [];
         this.hull = [];
         this.setActiveAlgorithm("graham");
@@ -285,6 +288,8 @@ export default class App{
     initUI(){
         this.LOG = new ActionsLog("actionsLog");
 
+        document.getElementById("button-group").addEventListener("click", (event) => this.handleAlgorithmSwitch(event));
+
         document.getElementById("startAnimation").addEventListener(("click"), () => this.handleStartAnimation());
         document.getElementById("pauseAnimation").addEventListener(("click"), () => this.handlePauseAnimation());
         document.getElementById("continueAnimation").addEventListener(("click"), () => this.handleContinueAnimation());
@@ -534,7 +539,40 @@ export default class App{
         }
     }
 
+    handleAlgorithmSwitch(event){
+        if (event.target.tagName !== 'LABEL') {
+            return;
+        }
+        event.stopPropagation();
+
+        const targetId = event.target.getAttribute("for");
+
+        this.setActiveAlgorithm(targetId);
+    }
+
     setActiveAlgorithm(algoName){
+
+        //Same button, not switching, do nothing
+        if (this.algoName === algoName){
+            return;
+        }
+
+        let buttonGroup = document.getElementById("button-group");
+        let previousButton;
+        if (this.algoName != ""){
+            previousButton = buttonGroup.querySelector(`#${this.algoName}`);
+            previousButton.checked = false;
+        }
+
+        //Get buttons
+        let algorithmButton = buttonGroup.querySelector(`#${algoName}`);
+
+        //Uncheck previous button, check new button
+        algorithmButton.checked = true;
+
+        //Set algoName
+        this.algoName = algoName;
+
         //Set algorithm
         this.algorithm = ALGORITHMS[algoName]["algorithm"];
         
