@@ -1,12 +1,16 @@
 import { generateIntPointsUniform, generatePointsUniform } from "../Helper/Distributions.js";
 import jarvis from "./Jarvis.js";
 import quickhull from "./QuickHull.js";
+import graham from "./Graham.js";
+import mergehull from "./Mergehull.js";
 
 function runTest(arr, algoName){
     let algorithm;
     let algorithms = {
         jarvis: jarvis,
-        quickhull: quickhull
+        quickhull: quickhull,
+        graham: graham,
+        mergehull: mergehull
     }
 
     algorithm = algorithms[algoName];

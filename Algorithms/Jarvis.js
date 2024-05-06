@@ -4,6 +4,7 @@
 */
 
 import { findLowestAndHighest } from "./Utility.js";
+import { distance } from "./Geometry.js";
 
 //Use https://leetcode.com/problems/erect-the-fence/ to test
 
@@ -37,7 +38,7 @@ export default function jarvis(points){
                  lowestAngledPoint = i;
                  //We keep the point         
              }
-             else if (lowestAngledPoint != null && positivexAngle(points[currentPoint], points[i]) == positivexAngle(points[currentPoint], points[lowestAngledPoint]) && distanceBetween(points[currentPoint], points[i]) < distanceBetween(points[currentPoint], points[lowestAngledPoint]))
+             else if (lowestAngledPoint != null && positivexAngle(points[currentPoint], points[i]) == positivexAngle(points[currentPoint], points[lowestAngledPoint]) && distance(points[currentPoint], points[i]) < distance(points[currentPoint], points[lowestAngledPoint]))
              {
                  lowestAngledPoint = i
              }
@@ -62,7 +63,7 @@ export default function jarvis(points){
                  lowestAngledPoint = i;
                  //We keep the point          
              }
-             else if (lowestAngledPoint != null && negativexAngle(points[currentPoint], points[i]) == negativexAngle(points[currentPoint], points[lowestAngledPoint]) && distanceBetween(points[currentPoint], points[i]) < distanceBetween(points[currentPoint], points[lowestAngledPoint]))
+             else if (lowestAngledPoint != null && negativexAngle(points[currentPoint], points[i]) == negativexAngle(points[currentPoint], points[lowestAngledPoint]) && distance(points[currentPoint], points[i]) < distance(points[currentPoint], points[lowestAngledPoint]))
              {
                  lowestAngledPoint = i
              }
@@ -75,14 +76,6 @@ export default function jarvis(points){
      return [hull, frames]
 }
 
-
-
-function distanceBetween(start, end){
-    let vectorY = end[1] - start[1];
-    let vectorX = end[0] - start[0];
-
-    return Math.sqrt(vectorY**2 + vectorX**2);
-}
 
 function positivexAngle(start, end){
     let vectorY = end[1] - start[1];

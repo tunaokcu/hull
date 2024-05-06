@@ -98,4 +98,4 @@ testVal = [[-97, -58], [-90, 1], [-79, 90], [-77, 93], [-65, -88], [-29, -97], [
 #found using delta debugging
 minimalTestVal = [[31, 100], [44, 98], [57, 96], [70, -80]]
 
-print(arrayTest(minimalTestVal, "jarvis"))
+print(arrayTest(minimalTestVal, "graham"))
