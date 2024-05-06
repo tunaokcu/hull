@@ -13,4 +13,7 @@ def runJS(path="../Algorithms/Test.js", n=10, log=True):
     return output
 
 def jsonToList(jsonStr):
-    return json.loads(jsonStr)
+    if jsonStr != None and jsonStr != "":
+        return json.loads(jsonStr)
+    
+    return []
