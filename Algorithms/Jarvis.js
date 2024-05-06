@@ -97,7 +97,13 @@ function negativexAngle(start, end){
     return Math.atan2(-vectorY, vectorX);
 }
 
+function absolutexAngle(start, end){
+    let angle = positivexAngle(start, end);
+
+    if (angle < 0){
+        return -angle + Math.PI;
+    }
+}
 
 
-export {positivexAngle, negativexAngle}
-
+export {positivexAngle, negativexAngle, absolutexAngle}

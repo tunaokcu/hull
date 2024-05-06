@@ -1,14 +1,24 @@
 //TODO TEST
 
-export {isInternalTo, centroid, onOrLeft, left, right, crossProduct, det, distance, angle}
+export {pointIsInside, centroid, onOrLeft, left, right, crossProduct, det, distance, angle}
 
 function onOrLeft(p1, p2, p3) {
     return crossProduct(p1, p2, p3) >= 0;
 }
 
-//TODO
-function isInternalTo(point, polygon){
+//For convex polygons only.
+function pointIsInside(point, polygon){
+    let n = polygon.length;
+    for (let i = 0; i < n; i++){
+        let cur = point[i];
+        let next = point[(i+1)%n]
 
+        if (right(cur, next, point)){
+            return false;
+        }
+    }
+    
+    return true;
 }
 
 function centroid(arr){
@@ -26,6 +36,7 @@ function centroid(arr){
     return centroid;
 }
 
+//Is p3 to the left of line p1-p2?
 function left(p1, p2, p3) {
     return crossProduct(p1, p2, p3) > 0;
 }

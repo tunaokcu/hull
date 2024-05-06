@@ -6,6 +6,7 @@ import graham from "./Algorithms/Graham.js";
 import Graphical from "./Graphical/Graphical.js";
 import ActionsLog from "./ActionsLog.js";
 import circle from "./Helper/Circle.js";
+import { load, save } from "./SaveLoadHandler.js";
 
 const POINT_RANGE = 1;
 
@@ -307,7 +308,43 @@ export default class App{
         document.getElementById("generateUniform").addEventListener("submit", (event) => this.generateUniform(event));
         document.getElementById("addPoint").addEventListener("submit", (event) => this.addPointByForm(event));
         document.getElementById("clear").addEventListener("click", () => this.clearScreen());
+
+        this.instantiateSaveLoadButtons();
     }
+
+    instantiateSaveLoadButtons(){
+        //SAVE LOAD HANDLER INIT
+
+        let saveLoad = document.getElementById("SaveLoad");
+        let saveButton = saveLoad.getElementsByTagName("button")[0];
+        let loadForm = document.getElementById("LoadForm");
+    
+        saveButton.addEventListener("click", () => (save(this.points, `${this.algoName}Points.txt`)));
+        loadForm.addEventListener("change", (event) => (loadHandler(event, this)));
+        document.getElementById("Load").addEventListener("submit", (e) => (e.preventDefault()));
+    
+    
+        function loadHandler(event, context){
+            console.log("caught")
+            let file = event.target.files[0];
+
+            event.preventDefault();
+            let fr = new FileReader();
+            fr.onload = () => {
+                //Clear points
+                context.clearScreen();
+
+                //Log "loaded" message
+                context.LOG.addAction( `Loaded ${file.name}`)
+                context.addPoints(load(fr.result));
+                context.calculateHull();
+                context.render();
+            }
+    
+            fr.readAsText(loadForm.files[0])
+        }
+    }
+
     
     handleStartAnimation(){
         document.getElementById("startAnimation").style.display = "none"

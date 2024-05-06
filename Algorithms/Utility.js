@@ -28,4 +28,7 @@ function copy2DArr(arr){
     return arr.map((item) => item.slice());
 }
 
+export function removeArrayDuplicates(array) {
+    return array.filter((item, index) => array.indexOf(item) === index);
+}
 
