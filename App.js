@@ -12,6 +12,21 @@ const POINT_RANGE = 1;
 let currentCanvasCoords;
 let CANVAS_WIDTH, CANVAS_HEIGHT;
 
+const ALGORITHMS = {
+    jarvis: {
+        algorithm: jarvis,
+        description: `<b>Jarvis march</b>, also known as the <b>gift wrapping algorithm</b>, is an <b>O(nh)</b> time algorithm where n is the number of total points and h is the number of points on the hull. 
+                        This algorithm is fast when a constant number of points are on the hull. It's worst case running time is realized when every point in the point set is on the hull. <br>
+                        <b>Press c</b> to place a circle on the screen and observe this worst case running time. `,
+        title: `Jarvis March`
+    },
+    graham: {
+        algorithm: graham,
+        description: `<b>Graham's scan</b> is an optimal convex hull algorithm with a running time of <b>O(nlogn)</b> where n is the number of total points.`,
+        title: `Graham's scan`
+    }
+}
+
 export default class App{
     points;
     hull;
@@ -20,7 +35,7 @@ export default class App{
     constructor(){
         this.points = [];
         this.hull = [];
-        this.algorithm = graham;
+        this.setActiveAlgorithm("graham");
 
         this.animated = false; //in animated mode
         this.animationPlaying = false; //animation is playing(not paused)
@@ -517,6 +532,23 @@ export default class App{
         if (this.action === "DOT"){
             event.preventDefault();
         }
+    }
+
+    setActiveAlgorithm(algoName){
+        //Set algorithm
+        this.algorithm = ALGORITHMS[algoName]["algorithm"];
+        
+        //Recalculate and rerender(actually, no need to rerender if every algorithm works fine)
+        this.calculateHull();
+        //this.render();
+
+        //Set description
+        let descriptionElement = document.getElementById("algorithmInfo");
+        descriptionElement.innerHTML = ALGORITHMS[algoName]["description"];
+
+        //Set title
+        let titleElement = document.getElementById("algorithmName");
+        titleElement.innerHTML = "<b>" + ALGORITHMS[algoName]["title"] + "</b>";
     }
     
 }
