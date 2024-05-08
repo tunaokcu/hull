@@ -52,3 +52,8 @@ label {
   input[type="radio"]:checked + label {
     background-color: #ccc;
   }
+
+* {
+  font-family: 'Monocraft';
+  src: url('./Monocraft.ttf') format('truetype');
+}
