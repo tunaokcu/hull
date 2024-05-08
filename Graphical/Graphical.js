@@ -114,6 +114,7 @@ export default class Graphical{
 
     }
 
+    SPLIT_FREQUENCY = 120000;
     //Points is a 2D array of points, dragged point is a single point array, incompleteLine is an array of exactly 2 points, completeLines is an array of 
     render(points=[], draggedPoint=[], incompleteLine=[], completeLines=[], coordinateSystemOn){  
         //Clear screen
@@ -128,22 +129,33 @@ export default class Graphical{
 
 
         this.camera.setMV(this.gl);
-        //Draw points and lines
-        if (points.length != 0){
+        //Draw points. Split up rendering.
+        let n = points.length;
+        let numOfSplits = Math.ceil(n / this.SPLIT_FREQUENCY);
+
+        for (let i = 0; i < numOfSplits; i++){
+            let start = i * this.SPLIT_FREQUENCY;
+            let end = i == numOfSplits - 1 ? n : start + this.SPLIT_FREQUENCY;
+
+            let curPoints = points.slice(start, end)
             //Buffer the vertices
             this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this.vertexBuffer );
-            this.gl.bufferData( this.gl.ARRAY_BUFFER, flatten(points), this.gl.STATIC_DRAW);
+            this.gl.bufferData( this.gl.ARRAY_BUFFER, flatten(curPoints), this.gl.STATIC_DRAW);
             
             //Buffer the color
             this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this.colorBuffer );
-            this.gl.bufferData( this.gl.ARRAY_BUFFER, flatten([].concat(...Array(points.length).fill(this.DOT_COLOR))), this.gl.STATIC_DRAW);
+            this.gl.bufferData( this.gl.ARRAY_BUFFER, flatten([].concat(...Array(curPoints.length).fill(this.DOT_COLOR))), this.gl.STATIC_DRAW);
             
-            count = points.length;
+            count = curPoints.length;
 
             //Draw
             this.gl.drawArrays(this.gl.POINTS, 0, count);
-        
+
+            // Unbind buffers
+            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, null);
         }
+
+        //Draw lines
         if (completeLines.length != 0){
             //Buffer the vertices
             this.gl.bindBuffer( this.gl.ARRAY_BUFFER, this.vertexBuffer );
@@ -159,6 +171,8 @@ export default class Graphical{
             //Draw
             this.gl.drawArrays(this.gl.LINE_LOOP, 0, count);
             
+            // Unbind buffers
+            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, null);
         }
         
         //Draw draggedPoint
@@ -173,6 +187,9 @@ export default class Graphical{
             
             //Draw
             this.gl.drawArrays(this.gl.POINTS, 0, 1);
+
+            // Unbind buffers
+            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, null);
         }
         //Draw incompleteLine
         if (incompleteLine.length != 0){
@@ -187,6 +204,9 @@ export default class Graphical{
             
             //Draw
             this.gl.drawArrays(this.gl.LINES, 0, 2);
+
+            // Unbind buffers
+            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, null);
         }
     }
 

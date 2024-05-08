@@ -154,7 +154,7 @@ export default class App{
 
     //Input is an array of points. Each point is a 2D array of xy coordinates.
     addPoints(addedPoints, log=true){
-        //addedPoints = addedPoints.map(point => pointToFixedPrecision(point))
+        addedPoints = addedPoints.map(point => pointToFixedPrecision(point))
         //Add the points to the already existing array 
         this.points = this.points.concat(addedPoints)
 
@@ -199,6 +199,8 @@ export default class App{
 
         // Calculate and set hull and animation frames
         [this.hull, this.frames] = this.algorithm(allPoints)
+
+        console.log(this.hull.length)
     }
 
     generateGaussian(event){

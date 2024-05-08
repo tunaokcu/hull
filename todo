@@ -22,3 +22,6 @@ Bugs
     render @ App.js:232
     generateUniform @ App.js:228
     (anonymous) @ App.js:320
+6)Some ideas for optimization(although the issue seems to be a lack of memory[sort of confirmed by loading the array statically instead of generating it on the page])
+    Workers(background thread)
+    Port to Electron and increase max memory? https://stackoverflow.com/questions/43933951/how-to-increase-the-max-memory-limit-for-the-app-built-by-electron-builder

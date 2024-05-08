@@ -4,12 +4,10 @@ export {generatePointsGuassian, generatePointsUniform, generateIntPointsUniform}
 
 
 function generatePointsGuassian(n, range) {
-    let points = [];
+    let points = new Array(n);
 
     for (let i = 0; i < n; i ++){
-        points.push([])
-        points[i].push(generateGaussian(0, range))
-        points[i].push(generateGaussian(0, range))
+        points[i] = [generateGaussian(0, range), generateGaussian(0, range)]
     }
     return points;
 }
