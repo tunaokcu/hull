@@ -1,7 +1,7 @@
 
 def hullDebugger(points, oracle):
-    if len(points) == 1:
-        return [points[0]]
+    if len(points) <= 3:
+        return points
     
     half = len(points) // 2
     

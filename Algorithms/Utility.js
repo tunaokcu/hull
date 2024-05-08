@@ -29,6 +29,9 @@ function copy2DArr(arr){
 }
 
 export function removeArrayDuplicates(array) {
-    return array.filter((item, index) => array.indexOf(item) === index);
+    //return array.filter((item, index) => array.indexOf(item) === index);
+    const uniquePoints = new Set(array.map(point => point.toString())); // Convert points to strings and use Set to remove duplicates
+    const uniqueArray = Array.from(uniquePoints, point => point.split(',').map(parseFloat)); // Convert back to array of arrays
+    return uniqueArray;
 }
 
