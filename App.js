@@ -7,6 +7,8 @@ import Graphical from "./Graphical/Graphical.js";
 import ActionsLog from "./ActionsLog.js";
 import circle from "./Helper/Circle.js";
 import { load, save } from "./SaveLoadHandler.js";
+import { pointIsInside } from "./Algorithms/Geometry.js";
+import { pointToFixedPrecision } from "./Algorithms/Utility.js";
 
 const POINT_RANGE = 1;
 
@@ -149,27 +151,33 @@ export default class App{
         if (!this.animated){ throw Error("The replay animation button should not be visible.")}
         //TODO the rest
     }
-    
-
-    /*
-    replacePoint(point){
-        //Delete last point
-        console.log(this.points.delete(point));
-
-        //Everything else is standard
-        this.addPoints(point);
-        
-    }*/
-
 
     //Input is an array of points. Each point is a 2D array of xy coordinates.
-    addPoints(addedPoints){
-        //Add the points to the already existing array and calculate the new hull.
+    addPoints(addedPoints, log=true){
+        //addedPoints = addedPoints.map(point => pointToFixedPrecision(point))
+        //Add the points to the already existing array 
         this.points = this.points.concat(addedPoints)
+
+        //TODO make sure pointIsInside works
+        //this.LOG.addAction(`Point is ${pointIsInside(addedPoints[0], this.hull)}`)
+        /*
+        //Check if point already in hull IF hull exists already AND this is a single point
+        if (addedPoints.length == 1 && this.hull.length != 0){
+            if (pointIsInside(addedPoints[0], this.hull)){
+                this.LOG.addAction("Point is inside the hull.");
+                return; 
+            }
+        }
+        */
+
+        //Calculate the new hull.
         this.calculateHull();
 
-        for (const point of addedPoints){
-            this.LOG.addAction(`Added (${point[0].toFixed(2)}, ${point[1].toFixed(2)})`);
+        
+        if (log){
+            for (const point of addedPoints){
+                this.LOG.addAction(`Added (${point[0].toFixed(2)}, ${point[1].toFixed(2)})`);
+            }
         }
     }
 
@@ -201,8 +209,10 @@ export default class App{
 
         document.getElementById("gaussianNumber").value = "";
 
-        this.addPoints(generatePointsGuassian(n, range));
+        this.addPoints(generatePointsGuassian(n, range), false);
+        this.LOG.addAction(`Generated ${n} Gaussian distributed points`);
         this.render();
+
     }
     generateUniform(event){
         event.preventDefault();
@@ -213,7 +223,8 @@ export default class App{
         document.getElementById("uniformNumber").value = "";
 
 
-        this.addPoints(generatePointsUniform(n, range));
+        this.addPoints(generatePointsUniform(n, range), false);
+        this.LOG.addAction(`Generated ${n} Uniform distributed points`);
         this.render();
     }
 
@@ -243,8 +254,9 @@ export default class App{
         return clipCoords[0] >= -1 && clipCoords[0] <= 1 && clipCoords[1] >= -1 && clipCoords[1] <= 1;
     }
 
-    placeCircleAt(center, r = 0.5){
-        this.addPoints(circle(center, r));
+    placeCircleAt(center, r = 0.5, n=100){
+        this.addPoints(circle(center, r, n), false);
+        this.LOG.addAction(`Placed a circle approximation of radius ${r} comprising of ${n} points centered at ${center}`);
         this.render();
     }
 
@@ -325,7 +337,6 @@ export default class App{
     
     
         function loadHandler(event, context){
-            console.log("caught")
             let file = event.target.files[0];
 
             event.preventDefault();
@@ -401,7 +412,6 @@ export default class App{
         document.addEventListener("wheel", (e) => this.zoomHandler(e), {passive: false}); //the {passive: false} part is necessary for the zoomHandler to prevent default action
         document.addEventListener("keyup", (e) => {
             if (e.keyCode == 65){
-                console.log("here")
                 this.handleStartAnimation()
             }
         }, false);

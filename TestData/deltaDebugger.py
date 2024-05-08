@@ -1,4 +1,3 @@
-
 def hullDebugger(points, oracle):
     if len(points) <= 3:
         return points

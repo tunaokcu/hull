@@ -1,25 +1,18 @@
-import { generateIntPointsUniform, generatePointsUniform } from "../Helper/Distributions.js";
 import jarvis from "./Jarvis.js";
 import quickhull from "./QuickHull.js";
 import graham from "./Graham.js";
 import mergehull from "./Mergehull.js";
 
-function runTest(n, algoName="quickhull",range=100){
+function runTest(arr, algoName){
     let algorithm;
     let algorithms = {
-        jarvis: jarvis,
-        quickhull: quickhull,
-        graham: graham,
-        mergehull: mergehull
+        Jarvis: jarvis,
+        Quickhull: quickhull,
+        Graham: graham,
+        Mergehull: mergehull
     }
 
     algorithm = algorithms[algoName];
-
-    //Generate random points
-    let arr = generatePointsUniform(n, range);
-    
-    //Log arr
-    console.log(JSON.stringify(arr));
 
     //Run the algorithm 
     let res = algorithm(arr)[0];
@@ -37,6 +30,6 @@ function lexicographicSort(arr){
 }
 
 let algoName = process.argv[2];
-let n = parseInt(process.argv[3]);
+let arr = JSON.parse(process.argv[3]);
 
-runTest(n, algoName);
+runTest(arr, algoName);

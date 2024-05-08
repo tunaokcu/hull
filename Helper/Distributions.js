@@ -8,13 +8,14 @@ function generatePointsGuassian(n, range) {
 
     for (let i = 0; i < n; i ++){
         points.push([])
-        points[i].push(generateGaussian(-range, range, 1))
-        points[i].push(generateGaussian(-range, range, 1))
+        points[i].push(generateGaussian(0, range))
+        points[i].push(generateGaussian(0, range))
     }
     return points;
 }
 
 //CREDIT: https://stackoverflow.com/questions/25582882/javascript-math-random-normal-distribution-gaussian-bell-curve
+/*
 function generateGaussian(min, max, skew) {
     let u = 0, v = 0;
     while(u === 0) u = Math.random() //Converting [0,1) to (0,1)
@@ -31,7 +32,23 @@ function generateGaussian(min, max, skew) {
     }
     return num
   }
+*/
+/*
+Credit: 
+https://discourse.psychopy.org/t/javascript-gaussian-function/17724
+https://github.com/errcw/gaussian/blob/master/lib/box-muller.js
+*/
+// Function from the gaussian repo, with a slight adjustment
+function generateGaussian(mean,std){
+  var _2PI = Math.PI * 2;
+  var u1 = Math.random();
+  var u2 = Math.random();
+  
+  var z0 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(_2PI * u2);
+  //var z1 = Math.sqrt(-2.0 * Math.log(u1)) * Math.sin(_2PI * u2);
 
+  return z0 * std + mean;
+}
 function generatePointsUniform(n, range){
     let points = [];
 

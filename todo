@@ -2,13 +2,23 @@ Add
 1)Graham
 2)Merge hull
 3)Quickhull
+4)Timer
 
 Optional
 4)Custom mouse cursor(different cursor while dragging, different cursor while placing point, etc)
-5)Could add a scrollable log of actions 
-6)Could add the ability to import and export points
 
 Bugs
 2)Animation doesn't work.
 3)Animation speed adjustments don't work.
 4)Sometimes load doesn't work
+5)Doesn't zoom directly into the cursor 
+6)Can handle about 120,000 points before getting:
+    Uncaught RangeError: Maximum call stack size exceeded
+    at Graphical.render (Graphical.js:139:66)
+    at App.render (App.js:232:24)
+    at App.generateUniform (App.js:228:14)
+    at HTMLFormElement.<anonymous> (App.js:320:95)
+    render @ Graphical.js:139
+    render @ App.js:232
+    generateUniform @ App.js:228
+    (anonymous) @ App.js:320

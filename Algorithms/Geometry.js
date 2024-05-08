@@ -1,19 +1,19 @@
 //TODO TEST
 
-export {pointIsInside, centroid, onOrLeft, left, right, crossProduct, det, distance, angle}
+export {pointIsInside, centroid, onOrLeft, left, right, crossProduct, det, distance, angle, isCCW}
 
 function onOrLeft(p1, p2, p3) {
     return crossProduct(p1, p2, p3) >= 0;
 }
 
-//For convex polygons only.
+//For convex, ccw polygons only.
 function pointIsInside(point, polygon){
     let n = polygon.length;
     for (let i = 0; i < n; i++){
-        let cur = point[i];
-        let next = point[(i+1)%n]
+        let cur = polygon[i];
+        let next = polygon[(i+1)%n]
 
-        if (right(cur, next, point)){
+        if (!left(cur, next, point)){
             return false;
         }
     }
@@ -86,3 +86,17 @@ function angle(p, q, r){
 
     return angleInRadians
 }
+
+//polygon is an array of points
+function isCCW(polygon){
+    let n = polygon.length;
+    for (let i = 0; i < n; i++){
+        let cur = polygon[i];
+        let next = polygon[(i+1)%n]
+        let nextNext = polygon[(i+2)%n]
+
+        if (!left(cur, next, nextNext)){
+        }
+    }
+}
+
