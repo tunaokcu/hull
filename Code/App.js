@@ -1,14 +1,16 @@
 import {generatePointsGuassian, generatePointsUniform} from "./Helper/Distributions.js";
-//import { quickhull, graham, mergehull, jarvis } from "./Algorithms/Algorithms.js";
-import {quickhull, mergehull, jarvis} from "./Algorithms/Algorithms.js";
+
+import quickhull from "./Algorithms/QuickHull.js";
+import mergehull from "./Algorithms/Mergehull.js";
+import jarvis from "./Algorithms/Jarvis.js";
 import graham from "./Algorithms/Graham.js";
 
 import Graphical from "./Graphical/Graphical.js";
 import ActionsLog from "./ActionsLog.js";
 import circle from "./Helper/Circle.js";
 import { load, save } from "./SaveLoadHandler.js";
-import { pointIsInside } from "./Algorithms/Geometry.js";
-import { pointToFixedPrecision } from "./Algorithms/Utility.js";
+import { pointIsInside } from "./Helper/Geometry.js";
+import { pointToFixedPrecision } from "./Helper/Utility.js";
 
 const POINT_RANGE = 1;
 
@@ -18,20 +20,25 @@ let CANVAS_WIDTH, CANVAS_HEIGHT;
 const ALGORITHMS = {
     jarvis: {
         algorithm: jarvis,
-        description: `<b>Jarvis march</b>, also known as the <b>gift wrapping algorithm</b>, is an <b>O(nh)</b> time algorithm where n is the number of total points and h is the number of points on the hull. 
+        description: `<b>Jarvis march</b>, also known as the <b>gift wrapping algorithm</b>, is an <b>O(nh)</b> time algorithm where n is the total number of points and h is the number of points on the hull. 
                         This algorithm is fast when a constant number of points are on the hull. It's worst case running time is realized when every point in the point set is on the hull. <br>
                         <b>Press c</b> to place a circle on the screen and observe this worst case running time. `,
         title: `Jarvis March`
     },
     graham: {
         algorithm: graham,
-        description: `<b>Graham's scan</b> is an optimal convex hull algorithm with a running time of <b>O(nlogn)</b> where n is the number of total points.`,
+        description: `<b>Graham's scan</b> is an optimal convex hull algorithm with a running time of <b>O(nlogn)</b> where n is the total number of points.`,
         title: `Graham's scan`
     },
     quickhull: {
         algorithm: quickhull,
-        description: `<b>Quickhull</b> is a convex hull algorithm inspired by quicksort with a worst case running time of <b>O(n<sup>2</sup>)</b> where n is the number of total points. It's expected running time, however, is the optimalO(nlogn)'`,
+        description: `<b>Quickhull</b> is a convex hull algorithm inspired by quicksort with a worst case running time of <b>O(n<sup>2</sup>)</b> where n is the total number of points. It's expected running time, however, is the optimalO(nlogn)`,
         title: `Quickhull`
+    },
+    mergehull: {
+        algorithm: mergehull,
+        description: `<b>Mergehull</b> is a convex hull algorithm inspired by mergesort with a worst case running time of <b>O(nlogn)</b> where n is the total number of points. '`,
+        title: `Mergehull`    
     }
 }
 
@@ -46,7 +53,10 @@ export default class App{
 
         this.points = [];
         this.hull = [];
-        this.setActiveAlgorithm("graham");
+
+        this.initUI();
+
+        this.setActiveAlgorithm("jarvis");
 
         this.animated = false; //in animated mode
         this.animationPlaying = false; //animation is playing(not paused)
@@ -56,7 +66,6 @@ export default class App{
 
         this.tool = "pen";
 
-        this.initUI();
 
         this.graphical.drawCoordinateSystem();
 
@@ -199,8 +208,18 @@ export default class App{
             allPoints.push(this.currentPoint)
         }
 
+        //Start timer
+        let start = window.performance.now();
+
         // Calculate and set hull and animation frames
         [this.hull, this.frames] = this.algorithm(allPoints)
+
+        //Stop timer
+        let end = window.performance.now();
+
+        let dur = (end - start);
+
+        this.LOG.addAction(`The convex hull of ${pointCount} points was found in ${dur} ms`);
     }
 
     generateGaussian(event){
@@ -245,16 +264,6 @@ export default class App{
         return  [clipCoords[0]/this.graphical.camera.currentZoom - this.graphical.camera.offsetX, clipCoords[1]/this.graphical.camera.currentZoom - this.graphical.camera.offsetY];
     }
 
-    //TODO fix
-    withinClip(clipCoords){
-        return true;
-        /*
-        let w = 1/this.graphical.camera.currentZoom;
-
-        let xStart =  - this.graphical.camera.offsetX;
-        let xEnd = xStart + 2 * 1/*/
-        return clipCoords[0] >= -1 && clipCoords[0] <= 1 && clipCoords[1] >= -1 && clipCoords[1] <= 1;
-    }
 
     placeCircleAt(center, r = 0.5, n=100){
         this.addPoints(circle(center, r, n), false);
@@ -453,33 +462,32 @@ export default class App{
         clipCoords = this.calcDotPlacement(clipCoords);
         this.mouselocationForCircle = clipCoords;
 
-        if (this.withinClip(clipCoords)){
-            switch (event.button){
-                //Left click
-                case 0: 
-                    //Cannot add new dots while animated
-                    if (this.animated) { return; }
+        switch (event.button){
+            //Left click
+            case 0: 
+                //Cannot add new dots while animated
+                if (this.animated) { return; }
 
-                    this.currentPoint = clipCoords;
-                    this.calculateHull();
-                    this.render();
+                this.currentPoint = clipCoords;
+                this.calculateHull();
+                this.render();
 
-                    this.action = "DOT"
-                    clearSelection();
-                    
-                    break;
+                this.action = "DOT"
+                clearSelection();
+                
+                break;
 
-                //Right click
-                case 2: 
+            //Right click
+            case 2: 
 
-                    this.action = "PAN";
+                this.action = "PAN";
 
-                    break;
+                break;
 
-                //Anything else
-                default: return;
-            }
+            //Anything else
+            default: return;
         }
+    
 
         this.lastMousePosition = clipCoordsOriginal;
     }
@@ -603,12 +611,12 @@ export default class App{
     }
 
     setActiveAlgorithm(algoName){
-
         //Same button, not switching, do nothing
         if (this.algoName === algoName){
             return;
         }
 
+        //Uncheck previous button if a button was already active.
         let buttonGroup = document.getElementById("button-group");
         let previousButton;
         if (this.algoName != ""){
@@ -616,10 +624,8 @@ export default class App{
             previousButton.checked = false;
         }
 
-        //Get buttons
+        //Check new button
         let algorithmButton = buttonGroup.querySelector(`#${algoName}`);
-
-        //Uncheck previous button, check new button
         algorithmButton.checked = true;
 
         //Set algoName
@@ -628,9 +634,12 @@ export default class App{
         //Set algorithm
         this.algorithm = ALGORITHMS[algoName]["algorithm"];
         
-        //Recalculate and rerender(actually, no need to rerender if every algorithm works fine)
+        //Log algorithm switch
+        this.LOG.addAction(`The active algorithm is set to ${ALGORITHMS[algoName]["title"]}`);
+
+        //Recalculate and rerender(actually, no need to rerender if every algorithm works fine, which is a fair assumption to make)
+        //We only recalculate so that we can log the time taken and have animation frames ready
         this.calculateHull();
-        //this.render();
 
         //Set description
         let descriptionElement = document.getElementById("algorithmInfo");

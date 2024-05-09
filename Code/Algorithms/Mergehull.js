@@ -1,4 +1,4 @@
-import { centroid, distance, pointIsInside } from "./Geometry.js";
+import { centroid, distance, pointIsInside } from '../Helper/Geometry.js';
 import { grahamScan } from "./Graham.js";
 import { absolutexAngle, negativexAngle, positivexAngle } from "./Jarvis.js";
 import quickhull from "./QuickHull.js";

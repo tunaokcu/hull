@@ -1,5 +1,3 @@
-//TODO TEST
-
 export {pointIsInside, centroid, onOrLeft, left, right, crossProduct, det, distance, angle, isCCW, pointsEqual}
 
 function pointsEqual(p1, p2){

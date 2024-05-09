@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="./Styles/styles.css">
 
 
   <script id="vertex-shader" type="x-shader/x-vertex">
@@ -22,7 +22,6 @@
     }
   </script>
   
-  <!--credit: https://www.youtube.com/watch?v=WyDnTO9KkrU&ab_channel=RichardOliverBray-->
   <script id="fragment-shader" type="x-shader/x-fragment">
     precision mediump float;
         
@@ -34,7 +33,6 @@
     }
   </script>
 
-  <!--<link rel="stylesheet" href="styles.css">-->
   <script type="module" src="index.js"></script>
 
 </head>
@@ -42,9 +40,9 @@
   
   <div class="navbar">
     <ul>
-      <li><a href="/Index.html">Visualization</a></li>
-      <li><a href="/Benchmarks.html">Benchmarks</a></li>
-      <li><a href="/Tests.html">Tests</a></li>
+      <li><a href="./Index.html">Visualization</a></li>
+      <li><a href="./Benchmarks.html">Benchmarks</a></li>
+      <li><a href="./Tests.html">Tests</a></li>
     </ul>
   </div>
 
@@ -62,14 +60,8 @@
       <input type="radio" id="graham" name="button-group"><label for="graham">Graham's Scan</label>
 
       <input type="radio" id="quickhull" name="button-group"><label for="quickhull">Quickhull</label>
-
-      <!--
-      <input type="radio" id="button3" name="button-group">
-      <label for="button3">Button 3</label>
     
-      <input type="radio" id="button4" name="button-group">
-      <label for="button4">Button 4</label>
-      -->
+      <input type="radio" id="mergehull" name="button-group"><label for="mergehull">Mergehull</label>
     </div>
 
   

@@ -1,5 +1,4 @@
 export default class ActionsLog{
-    
     //Init with HTML ID
     constructor(id){
         this.id = id;

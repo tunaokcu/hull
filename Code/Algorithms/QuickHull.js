@@ -1,4 +1,4 @@
-import {det, left, angle} from "./Geometry.js";
+import {det, left, angle} from '../Helper/Geometry.js';
 
 let EPSILON = 0.00001;//Number.MIN_VALUE;
 

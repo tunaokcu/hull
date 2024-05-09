@@ -1,6 +1,6 @@
-import {angle, distance, left, right} from './Geometry.js';
+import {angle, distance, left, right} from '../Helper/Geometry.js';
 import { absolutexAngle } from './Jarvis.js';
-import {minYmaxX} from "./Utility.js"
+import {minYmaxX} from "../Helper/Utility.js"
 
 export default function graham(points){
     if (points.length < 3) return;

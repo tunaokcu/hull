@@ -15,13 +15,16 @@ def findAbsolutePath(relative):
 
 def runTestJS(algorithmName, arr):
     #Find path to Test.js
-    filename = findAbsolutePath("..\Algorithms\Test.js")
+    filename = findAbsolutePath(".\Test.js")
+
 
     #Prepare command
     commandlineArgs = ["node", filename, algorithmName, str(arr)]
 
+
     #Capture and parse output
     output = subprocess.run(commandlineArgs, capture_output=True, text=True)
+    
 
     output = output.stdout.strip()
     output = output.split("\n")[-1]
@@ -135,4 +138,4 @@ def arrayTestWithoutDupes(array, algorithm):
 
 
 
-randomTestWithoutDupes("quickhull", 1000000, 1)
+randomTestWithoutDupes("quickhull", 1000, 1)

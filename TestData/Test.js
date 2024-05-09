@@ -1,7 +1,7 @@
-import jarvis from "./Jarvis.js";
-import quickhull from "./QuickHull.js";
-import graham from "./Graham.js";
-import mergehull from "./Mergehull.js";
+import jarvis from "../Code/Algorithms/Jarvis.js";
+import quickhull from "../Code/Algorithms/QuickHull.js";
+import graham from "../Code/Algorithms/Graham.js";
+import mergehull from "../Code/Algorithms/Mergehull.js";
 
 function runTest(arr, algoName){
     let algorithm;

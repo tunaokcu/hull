@@ -3,9 +3,9 @@
     March up, march down
 */
 
-import { findLowestAndHighest } from "./Utility.js";
-import { distance, isCCW, pointsEqual } from "./Geometry.js";
-import { minYmaxX, maxYminX } from "./Utility.js";
+import { findLowestAndHighest } from '../Helper/Utility.js';
+import { distance, isCCW, pointsEqual } from '../Helper/Geometry.js';
+import { minYmaxX, maxYminX } from '../Helper/Utility.js';
 
 //Use https://leetcode.com/problems/erect-the-fence/ to test
 
