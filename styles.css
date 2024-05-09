@@ -34,26 +34,60 @@ label {
     display: flex;
   }
   
-  input[type="radio"] {
-    display: none; /* Hide the actual radio buttons */
-  }
+input[type="radio"] {
+  display: none; /* Hide the actual radio buttons */
+}
+
+.button-group label {
+  display: block;
+  padding: 10px 20px;
+  margin-right: 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
   
-  .button-group label {
-    display: block;
-    padding: 10px 20px;
-    margin-right: 10px;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-bottom: 10px;
-  }
-  
-  input[type="radio"]:checked + label {
-    background-color: #ccc;
-  }
+input[type="radio"]:checked + label {
+  background-color: #ccc;
+}
 
 * {
   font-family: 'Monocraft';
   src: url('./Monocraft.ttf') format('truetype');
+}
+
+
+.navbar {
+  margin-bottom: 10px;
+}
+
+.navbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+.navbar li {
+  float: left;
+}
+
+.navbar li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+.navbar li a:hover {
+  background-color: #111;
+}
+
+.navbar-active {
+  background-color: #04AA6D;
 }

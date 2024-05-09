@@ -10,15 +10,14 @@ export default function circle(center, radius, numOfPoints=20){
     }
     //Else, cache unit circle
     else{
-        let uStart = 0; 
-        let uEnd = 2*Math.PI;
-        let uDelta = (uEnd-uStart)/numOfPoints;
+
+        let uDelta = 2*Math.PI/numOfPoints;
 
 
         for (let i = 0; i < numOfPoints; i++){
-            let u = uStart + i*uDelta;
+            let u =i*uDelta;
 
-            points.push(circleEquation(center,1,u))
+            points.push(unitCircle(u));
         }
 
         cached.set(numOfPoints, points);
@@ -29,6 +28,10 @@ export default function circle(center, radius, numOfPoints=20){
     return points.map((point) => [point[0]*radius + center[0], point[1]*radius + center[1]])
 }
 
+function unitCircle(u){
+    return [Math.cos(u),Math.sin(u)];
+
+}
 function circleEquation(center, radius, u){
     return [center[0] + radius*Math.cos(u), center[1] + radius*Math.sin(u)];
 }

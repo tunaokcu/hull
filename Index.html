@@ -18,7 +18,7 @@
     {
         gl_Position = projectionMatrix*modelViewMatrix*vec4(vPosition, 0, 1);
         fColor = vColor;
-        gl_PointSize = 3.0;
+        gl_PointSize = 10.0;
     }
   </script>
   
@@ -39,6 +39,16 @@
 
 </head>
 <body class="wrapper">
+  
+  <div class="navbar">
+    <ul>
+      <li><a href="/Index.html">Visualization</a></li>
+      <li><a href="/Benchmarks.html">Benchmarks</a></li>
+      <li><a href="contact.asp">Contact</a></li>
+      <li><a href="about.asp">About</a></li>
+    </ul>
+  </div>
+
   <div class="content">
     <canvas id="gl-canvas" width="700" height="700"></canvas>
   </div>

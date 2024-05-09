@@ -350,7 +350,6 @@ export default class App{
                 //Log "loaded" message
                 context.LOG.addAction( `Loaded ${file.name}`)
                 context.addPoints(load(fr.result));
-                context.calculateHull();
                 context.render();
             }
     
@@ -550,7 +549,6 @@ export default class App{
                 this.currentPoint = [];
 
                 this.addPoints([clipCoords])
-                this.calculateHull();
                 this.render();
                 
                 break;

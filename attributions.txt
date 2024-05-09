@@ -3,3 +3,5 @@ Gaussian function: https://stackoverflow.com/questions/25582882/javascript-math-
 Clear selection function: https://stackoverflow.com/questions/6562727/is-there-a-function-to-deselect-all-text-using-javascript
 
 Monocraft.ttf https://github.com/IdreesInc/Monocraft/releases/tag/v3.0
+
+Navbar: https://www.w3schools.com/css/css_navbar_horizontal.asp
