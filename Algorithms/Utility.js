@@ -35,6 +35,7 @@ export function removeArrayDuplicates(array) {
     return uniqueArray;
 }
 
+const PRECISION = 5;
 export function pointToFixedPrecision(arr){
-    return arr.map(num => parseFloat(num.toFixed(3)));
+    return arr.map(num => parseFloat(num.toFixed(PRECISION)));
 }

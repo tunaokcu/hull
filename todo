@@ -5,7 +5,9 @@ Add
 4)Timer
 
 Optional
-4)Custom mouse cursor(different cursor while dragging, different cursor while placing point, etc)
+1)Point size manipulation
+2)Custom mouse cursor(different cursor while dragging, different cursor while placing point, etc)
+
 
 Bugs
 2)Animation doesn't work.

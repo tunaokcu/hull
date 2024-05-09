@@ -135,4 +135,4 @@ def arrayTestWithoutDupes(array, algorithm):
 
 
 
-#randomTestWithoutDupes("quickhull", 100, 100)
+randomTestWithoutDupes("graham", 100, 100)

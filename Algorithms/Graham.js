@@ -1,77 +1,50 @@
-import {left, right} from './Geometry.js';
-
+import {angle, distance, left, right} from './Geometry.js';
+import { absolutexAngle } from './Jarvis.js';
 export default function graham(points){
     if (points.length < 3) return;
 
-    let leftmost = points[0];
-    for (let i = 1; i < points.length; i++){
-        if (points[i][0] < leftmost[0]){
-            leftmost = points[i];
-        }
-    }
+    //This bottomMost point is going to be internal anyways(it's literally on the hull) so we can skip fidning the centroid
+    let bottomMost = minYmaxX(points);
 
-    let rightmost = points[0];
-    for (let i = 1; i < points.length; i++){
-        if (points[i][0] > rightmost[0]){
-            rightmost = points[i];
-        }
-    }
+    //This will mutate the array
+    sortLexicographically(points, bottomMost);
 
-    let above = [];
-    let below = [];
+    let stack = [];
 
     for (let i = 0; i < points.length; i++){
-        if (left(leftmost, rightmost, points[i])){
-            above.push(points[i]);
-        } else if (right(leftmost, rightmost, points[i])){
-            below.push(points[i]);
-        }
-    }
-  
-    above.sort((a, b) => a[0] == b[0] ? b[1] - a[1] : a[0] - b[0]);
-    below.sort((a, b) => b[0] == a[0] ? a[1] - b[1] : b[0] - a[0]);
+        let n = stack.length;
 
-    above.push(rightmost);
-    below.push(leftmost);
-
-    for(let i = 0; i < above.length - 1; i++){
-        while( above[i][0] == above[i+1][0] && above[i][1] == above[i+1][1]){
-            above.splice(i+1, 1);
-            i--;
+        while (n >= 2 && !left(stack[n-2], stack[n-1], points[i])){
+            stack.pop();
+            n = stack.length;
         }
-    }
 
-    for(let i = 0; i < below.length - 1; i++){
-        while( below[i][0] == below[i+1][0] && below[i][1] == below[i+1][1]){
-            below.splice(i+1, 1);
-            i--;
-        }
+        stack.push(points[i]);
     }
     
-
-    let upperhull = [leftmost, above[0]];
-    let currentSize = 2;
-    for (let i = 1; i < above.length; i++){
-        while (currentSize >= 2 && left(upperhull[ currentSize - 2], upperhull[ currentSize - 1], above[i])){
-            upperhull.pop();
-            currentSize--;
-        }
-        upperhull.push(above[i]);
-        currentSize++;
-    }
-
-    let lowerhull = [rightmost, below[0]];
-    currentSize = 2;
-    for (let i = 1; i < below.length; i++){
-        while (currentSize >= 2 && left(lowerhull[ currentSize - 2], lowerhull[ currentSize - 1], below[i])){
-            lowerhull.pop();
-            currentSize--;
-        }
-        lowerhull.push(below[i]);
-        currentSize++;
-    }
-
-    upperhull.pop();
-    let hull = upperhull.concat(lowerhull);
-    return [hull, []];
+    return [stack, []];
 }
+
+function minYmaxX(points){
+    let bottomMost = points[0];
+
+    for(let i=1; i < points.length; i++){
+        if (points[i][1] < bottomMost[1] || points[i][1] == bottomMost[1] && points[i][0] > bottomMost[0]){
+            bottomMost = points[i]
+        }
+    }
+
+    return bottomMost;
+}
+
+//Sort on 1)polar angle 2)distance from referencePoint
+function sortLexicographically(points, referencePoint){
+    points.sort((a, b) =>{
+        let angleDiff = absolutexAngle(referencePoint, a) - absolutexAngle(referencePoint, b);
+
+        //If the difference in polar angles is equal, sort according to distance
+        return angleDiff == 0 ? distance(referencePoint, a) - distance(referencePoint, b) : angleDiff;
+    });
+}
+
+console.log(absolutexAngle([0,0], [1, 0]))
