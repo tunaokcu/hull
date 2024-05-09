@@ -13,12 +13,14 @@ function onOrLeft(p1, p2, p3) {
 
 //For convex, ccw polygons only.
 function pointIsInside(point, polygon){
+    console.log(isCCW(polygon));
+    
     let n = polygon.length;
     for (let i = 0; i < n; i++){
         let cur = polygon[i];
         let next = polygon[(i+1)%n]
 
-        if (!left(cur, next, point)){
+        if (right(cur, next, point)){
             return false;
         }
     }
@@ -100,8 +102,10 @@ function isCCW(polygon){
         let next = polygon[(i+1)%n]
         let nextNext = polygon[(i+2)%n]
 
-        if (!left(cur, next, nextNext)){
+        if (right(cur, next, nextNext)){
+            return false; 
         }
     }
+    return true;
 }
 

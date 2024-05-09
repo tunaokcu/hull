@@ -135,4 +135,4 @@ def arrayTestWithoutDupes(array, algorithm):
 
 
 
-randomTestWithoutDupes("quickhull", 100, 100)
+randomTestWithoutDupes("quickhull", 1000000, 1)

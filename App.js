@@ -159,6 +159,8 @@ export default class App{
         this.points = this.points.concat(addedPoints)
 
         //TODO make sure pointIsInside works
+        console.log(addedPoints[0])
+        console.log(this.hull)
         this.LOG.addAction(`Point is ${pointIsInside(addedPoints[0], this.hull)}`)
         /*
         //Check if point already in hull IF hull exists already AND this is a single point
