@@ -1,4 +1,5 @@
 import { centroid, distance, pointIsInside } from "./Geometry.js";
+import { grahamScan } from "./Graham.js";
 import { absolutexAngle, negativexAngle, positivexAngle } from "./Jarvis.js";
 import quickhull from "./QuickHull.js";
 
@@ -126,7 +127,9 @@ function merge(a, b){
     }
 
     //TODO graham scan
+    let finalHull = grahamScan(mergedHull);
 
+    return [finalHull, []]
 }
 
 function findIndexOfFirstNegativeAngle(hull, origin){

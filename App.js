@@ -30,7 +30,7 @@ const ALGORITHMS = {
     },
     quickhull: {
         algorithm: quickhull,
-        description: `<b>Quickhull</b> is a convex hull algorithm inspired by quicksort with a worst case running time of <b>O(n^2)</b> where n is the number of total points. It is, however, optimal on average.`,
+        description: `<b>Quickhull</b> is a convex hull algorithm inspired by quicksort with a worst case running time of <b>O(n<sup>2</sup>)</b> where n is the number of total points. It's expected running time, however, is the optimalO(nlogn)'`,
         title: `Quickhull`
     }
 }
@@ -81,7 +81,7 @@ export default class App{
         if (!this.animationPlaying) {        return}// this.lastFrame = frameIndex;            return; }
 
         //Animation ran to completion. Call the hull render function and return
-        if (this.frames.length - 1 == frameIndex){
+        if (this.frames.length == frameIndex){
             this.handleSkipforward(); 
             return;
         }
@@ -159,7 +159,7 @@ export default class App{
         this.points = this.points.concat(addedPoints)
 
         //TODO make sure pointIsInside works
-        //this.LOG.addAction(`Point is ${pointIsInside(addedPoints[0], this.hull)}`)
+        this.LOG.addAction(`Point is ${pointIsInside(addedPoints[0], this.hull)}`)
         /*
         //Check if point already in hull IF hull exists already AND this is a single point
         if (addedPoints.length == 1 && this.hull.length != 0){

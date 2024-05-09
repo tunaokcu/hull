@@ -1,8 +1,9 @@
 Add
-1)Graham
+1)Jarvis
 2)Merge hull
-3)Quickhull
+3)Quickhull -> very small bug
 4)Timer
+5)Quickhull worst case
 
 Optional
 1)Point size manipulation
