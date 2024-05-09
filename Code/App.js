@@ -66,7 +66,6 @@ export default class App{
 
         this.tool = "pen";
 
-
         this.graphical.drawCoordinateSystem();
 
         this.initHandlers();

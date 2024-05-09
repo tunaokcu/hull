@@ -1,3 +1,17 @@
 {
-    "type": "module"
+  "type": "module",
+  "name": "hullelectron",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron --stack-size=100000 .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "electron": "^30.0.2"
+  }
 }
