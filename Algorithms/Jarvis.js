@@ -4,7 +4,8 @@
 */
 
 import { findLowestAndHighest } from "./Utility.js";
-import { distance } from "./Geometry.js";
+import { distance, pointsEqual } from "./Geometry.js";
+import { minYmaxX, maxYminX } from "./Utility.js";
 
 //Use https://leetcode.com/problems/erect-the-fence/ to test
 
@@ -17,68 +18,82 @@ export default function jarvis(points){
      let hull = []; 
      let frames = [];
  
-     // Find the indices of the lowest and highest points to the LEFT
-     const [lowestPoint, highestPoint] = findLowestAndHighest(points);
-     
-     let currentPoint = lowestPoint;
+     // Find the value of the lowest point
+     let lowestPoint = minYmaxX(points);
+     let highestPoint = maxYminX(points);
 
+
+     let currentPoint = lowestPoint;
      // March up     
      do {
-        hull.push(points[currentPoint]);
+        hull.push(currentPoint);
 
         frames.push(hull.slice())
 
-         let lowestAngledPoint = null;
-         for (let i = 0; i < points.length; i++){
-             if (i == currentPoint) { continue; }
+        let lowestAngledPoint = null;
+        for (let i = 0; i < points.length; i++){
+            frames.push([...hull, points[i]])
+
+            //They are either equal or they make a negative angle
+            if (pointsEqual(currentPoint, points[i]) || negativexAngle(currentPoint, points[i]) > 0){
+                continue;
+            }
+            if (lowestAngledPoint == null){
+                lowestAngledPoint = points[i];
+                continue;
+            }
             
-             frames.push([...hull, points[i]])
-             if (positivexAngle(points[currentPoint], points[i]) < 0){ continue; } //No need to consider
-             if ((lowestAngledPoint == null ||  positivexAngle(points[currentPoint], points[i]) < positivexAngle(points[currentPoint], points[lowestAngledPoint]))){
-                 lowestAngledPoint = i;
-                 //We keep the point         
-             }
-             else if (lowestAngledPoint != null && positivexAngle(points[currentPoint], points[i]) == positivexAngle(points[currentPoint], points[lowestAngledPoint]) && distance(points[currentPoint], points[i]) > distance(points[currentPoint], points[lowestAngledPoint]))
-             {
-                 lowestAngledPoint = i
-             }
-         }
+
+            //Either makes a smaller angle or makes the same angle but is further away
+            let makesSmallerAngle = positivexAngle(currentPoint, points[i]) < positivexAngle(currentPoint, lowestAngledPoint);
+            let makesSameAngle = positivexAngle(currentPoint, points[i]) == positivexAngle(currentPoint, lowestAngledPoint);
+            let isFurtherAway =  distance(currentPoint, points[i]) > distance(currentPoint, lowestAngledPoint)
+
+            if(makesSmallerAngle || (makesSameAngle && isFurtherAway)){
+                lowestAngledPoint = points[i];
+            }
+        
+        }
          
          currentPoint = lowestAngledPoint;
-     } while(currentPoint != highestPoint)
-     
-     
-     // March down
+     } while(!pointsEqual(currentPoint, highestPoint))
+
+    
     currentPoint = highestPoint;
-     do {
-         hull.push(points[currentPoint]);
-     
+    // March up     
+    do {
+        hull.push(currentPoint);
 
-         let lowestAngledPoint = null;
-         for (let i = 0; i < points.length; i++){
-             if (i == currentPoint) { continue; }
+        frames.push(hull.slice())
 
-             frames.push([...hull, points[i]])
+        let lowestAngledPoint = null;
+        for (let i = 0; i < points.length; i++){
+            frames.push([...hull, points[i]])
 
-            /*
-            if (lowestAngledPoint == null || negativexAngle(points[currentPoint], points[i]) >= 0 && (lowestAngledPoint == null ||  negativexAngle(points[currentPoint], points[i]) < negativexAngle(points[currentPoint], points[lowestAngledPoint]))){
-                 lowestAngledPoint = i;
-                 //We keep the point          
-             }*/
-            if ((lowestAngledPoint == null ||  negativexAngle(points[currentPoint], points[i]) > negativexAngle(points[currentPoint], points[lowestAngledPoint]))){
-                lowestAngledPoint = i;
-                //We keep the point         
+            //They are either equal or they make a positive angle
+            if (pointsEqual(currentPoint, points[i]) || positivexAngle(currentPoint, points[i]) > 0){
+                continue;
             }
-             else if (lowestAngledPoint != null && negativexAngle(points[currentPoint], points[i]) == negativexAngle(points[currentPoint], points[lowestAngledPoint]) && distance(points[currentPoint], points[i]) > distance(points[currentPoint], points[lowestAngledPoint]))
-            {
-                lowestAngledPoint = i
+            if (lowestAngledPoint == null){
+                lowestAngledPoint = points[i];
+                continue;
             }
-         }
+            
 
-         currentPoint = lowestAngledPoint;
-     } while(currentPoint != lowestPoint)
-     
+            //Either makes a smaller angle or makes the same angle but is further away
+            let makesSmallerAngle = negativexAngle(currentPoint, points[i]) > negativexAngle(currentPoint, lowestAngledPoint);
+            let makesSameAngle = negativexAngle(currentPoint, points[i]) == negativexAngle(currentPoint, lowestAngledPoint);
+            let isFurtherAway =  distance(currentPoint, points[i]) > distance(currentPoint, lowestAngledPoint)
 
+            if(makesSmallerAngle || (makesSameAngle && isFurtherAway)){
+                lowestAngledPoint = points[i];
+            }
+        
+        }
+        
+        currentPoint = lowestAngledPoint;
+
+    } while(!pointsEqual(currentPoint, lowestPoint))
      return [hull, frames]
 }
 
@@ -105,6 +120,5 @@ function absolutexAngle(start, end){
     }
     return angle;
 }
-
 
 export {positivexAngle, negativexAngle, absolutexAngle}

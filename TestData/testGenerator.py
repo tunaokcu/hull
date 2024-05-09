@@ -99,7 +99,7 @@ def randomTestWithoutDupes(algorithm, pointCount, testCount):
         output = sorted(output)
 
         passed = compareHulls(hullOracle(arr), output)
-        
+
         if not passed:
             
             curFilename = filename + str(i)
@@ -135,4 +135,4 @@ def arrayTestWithoutDupes(array, algorithm):
 
 
 
-randomTestWithoutDupes("graham", 100, 100)
+randomTestWithoutDupes("quickhull", 100, 100)

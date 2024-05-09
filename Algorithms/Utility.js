@@ -39,3 +39,27 @@ const PRECISION = 5;
 export function pointToFixedPrecision(arr){
     return arr.map(num => parseFloat(num.toFixed(PRECISION)));
 }
+
+export function minYmaxX(points){
+    let bottomMost = points[0];
+
+    for(let i=1; i < points.length; i++){
+        if (points[i][1] < bottomMost[1] || points[i][1] == bottomMost[1] && points[i][0] > bottomMost[0]){
+            bottomMost = points[i]
+        }
+    }
+
+    return bottomMost;
+}
+
+export function maxYminX(points){
+    let topMost = points[0];
+
+    for(let i=1; i < points.length; i++){
+        if (points[i][1] > topMost[1] || points[i][1] == topMost[1] && points[i][0] < topMost[0]){
+            topMost = points[i]
+        }
+    }
+
+    return topMost;
+}

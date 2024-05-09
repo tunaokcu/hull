@@ -1,5 +1,6 @@
 import {angle, distance, left, right} from './Geometry.js';
 import { absolutexAngle } from './Jarvis.js';
+import {minYmaxX} from "./Utility.js"
 
 export default function graham(points){
     if (points.length < 3) return;
@@ -37,17 +38,6 @@ export function grahamScan(points){
     return [stack, frames];
 }
 
-function minYmaxX(points){
-    let bottomMost = points[0];
-
-    for(let i=1; i < points.length; i++){
-        if (points[i][1] < bottomMost[1] || points[i][1] == bottomMost[1] && points[i][0] > bottomMost[0]){
-            bottomMost = points[i]
-        }
-    }
-
-    return bottomMost;
-}
 
 //Sort on 1)polar angle 2)distance from referencePoint
 function sortLexicographically(points, referencePoint){
@@ -59,4 +49,3 @@ function sortLexicographically(points, referencePoint){
     });
 }
 
-console.log(absolutexAngle([0,0], [1, 0]))

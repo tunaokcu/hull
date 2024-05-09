@@ -1,10 +1,15 @@
 //TODO TEST
 
-export {pointIsInside, centroid, onOrLeft, left, right, crossProduct, det, distance, angle, isCCW}
+export {pointIsInside, centroid, onOrLeft, left, right, crossProduct, det, distance, angle, isCCW, pointsEqual}
+
+function pointsEqual(p1, p2){
+    return p1[0] == p2[0] && p1[1] == p2[1];
+}
 
 function onOrLeft(p1, p2, p3) {
     return crossProduct(p1, p2, p3) >= 0;
 }
+
 
 //For convex, ccw polygons only.
 function pointIsInside(point, polygon){

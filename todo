@@ -11,20 +11,12 @@ Optional
 
 
 Bugs
+1)Swapping between algorithms while in animation crashes the app.
 2)Animation doesn't work.
 3)Animation speed adjustments don't work.
 4)Sometimes load doesn't work
 5)Doesn't zoom directly into the cursor 
-6)Can handle about 120,000 points before getting:
-    Uncaught RangeError: Maximum call stack size exceeded
-    at Graphical.render (Graphical.js:139:66)
-    at App.render (App.js:232:24)
-    at App.generateUniform (App.js:228:14)
-    at HTMLFormElement.<anonymous> (App.js:320:95)
-    render @ Graphical.js:139
-    render @ App.js:232
-    generateUniform @ App.js:228
-    (anonymous) @ App.js:320
+6)Can handle more than 1,000,000 points
 6)Some ideas for optimization(although the issue seems to be a lack of memory[sort of confirmed by loading the array statically instead of generating it on the page])
     Workers(background thread)
     Port to Electron and increase max memory? https://stackoverflow.com/questions/43933951/how-to-increase-the-max-memory-limit-for-the-app-built-by-electron-builder
