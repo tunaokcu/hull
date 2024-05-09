@@ -199,8 +199,6 @@ export default class App{
 
         // Calculate and set hull and animation frames
         [this.hull, this.frames] = this.algorithm(allPoints)
-
-        console.log(this.hull.length)
     }
 
     generateGaussian(event){
