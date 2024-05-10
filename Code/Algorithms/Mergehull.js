@@ -7,7 +7,11 @@ import quickhull from "./QuickHull.js";
 const BASE_CASE = 4;
 const HULL_ALGORITHM = quickhull;
 
+console.log(mergehull([[0,0], [0, 1], [1, 0], [1, 1]]));
+
 export default function mergehull(points){
+    console.log(points);
+
     let n = points.length; 
 
     if (n <= BASE_CASE){

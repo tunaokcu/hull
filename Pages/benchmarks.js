@@ -56,9 +56,6 @@ function getChartData(start, end, delta){
         quickhullData.push(curQuickhull);
     }   
 
-    console.log(jarvisData);
-    console.log(grahamData);
-    console.log(quickhullData);
 
 
 
@@ -79,7 +76,6 @@ function testAndChartResults(start, end, delta){
 
     let [jarvisData, grahamData, quickhullData] = getChartData(start, end, delta);
     
-    console.log(jarvisData, grahamData, quickhullData)
 
 
 
@@ -129,6 +125,9 @@ function testAndChartResults(start, end, delta){
         }
       },
       scales: {
+        x: {
+            type: 'linear'
+        },
         y: {
           type: 'linear',
           display: true,
