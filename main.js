@@ -4,8 +4,10 @@ function createWindow () {
   const win = new BrowserWindow({
     width: 1700,
     height: 900,
+    resizable: false,
     webPreferences: {
-      nodeIntegration: true 
+      nodeIntegration: true,
+      sandbox: false
     }
   });
 

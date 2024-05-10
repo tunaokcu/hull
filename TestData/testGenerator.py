@@ -137,5 +137,4 @@ def arrayTestWithoutDupes(array, algorithm):
     return compareHulls(output, groundTruth)
 
 
-
 randomTestWithoutDupes("quickhull", 1000, 1)
