@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
-    "start": "electron --stack-size=100000 .",
+    "start": "electron --stack-size=300000000 .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
