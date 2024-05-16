@@ -71,16 +71,6 @@ export default class App{
         this.initHandlers();
     }
 
-    animationDelay = 1000;
-    increaseAnimationSpeed(){
-        if (this.animationDelay > 10){
-            this.animationDelay /= 10
-        }
-    }
-    
-    decreaseAnimationSpeed(){
-        this.animationDelay *= 10
-    }
 
     lastFrame;
     animation(frameIndex=0){ 
@@ -155,35 +145,15 @@ export default class App{
         this.tool = "pen";
     }
 
-    replayAnimation(){ 
-        if (!this.animated){ throw Error("The replay animation button should not be visible.")}
-        //TODO the rest
-    }
-
     //Input is an array of points. Each point is a 2D array of xy coordinates.
     addPoints(addedPoints, log=true){
         addedPoints = addedPoints.map(point => pointToFixedPrecision(point))
         //Add the points to the already existing array 
         this.points = this.points.concat(addedPoints)
 
-        //TODO make sure pointIsInside works
-        console.log(addedPoints[0])
-        console.log(this.hull)
-        this.LOG.addAction(`Point is ${pointIsInside(addedPoints[0], this.hull)}`)
-        /*
-        //Check if point already in hull IF hull exists already AND this is a single point
-        if (addedPoints.length == 1 && this.hull.length != 0){
-            if (pointIsInside(addedPoints[0], this.hull)){
-                this.LOG.addAction("Point is inside the hull.");
-                return; 
-            }
-        }
-        */
-
         //Calculate the new hull.
         this.calculateHull();
-
-        
+    
         if (log){
             for (const point of addedPoints){
                 this.LOG.addAction(`Added (${point[0].toFixed(2)}, ${point[1].toFixed(2)})`);
@@ -322,8 +292,6 @@ export default class App{
         document.getElementById("pauseAnimation").addEventListener(("click"), () => this.handlePauseAnimation());
         document.getElementById("continueAnimation").addEventListener(("click"), () => this.handleContinueAnimation());
         document.getElementById("skipForward").addEventListener(("click"), () => this.handleSkipforward());
-        document.getElementById("+speed").addEventListener(("click"), () => this.increaseAnimationSpeed());
-        document.getElementById("-speed").addEventListener(("click"), () => this.decreaseAnimationSpeed());
 
     
         document.getElementById("generateGaussian").addEventListener("submit", (event) => this.generateGaussian(event));
@@ -368,8 +336,6 @@ export default class App{
     
     handleStartAnimation(){
         document.getElementById("startAnimation").style.display = "none"
-        document.getElementById("+speed").style.display = "inline"
-        document.getElementById("-speed").style.display = "inline"
         document.getElementById("pauseAnimation").style.display = "inline"
         document.getElementById("skipForward").style.display = "inline"
         this.startAnimation();
@@ -378,15 +344,11 @@ export default class App{
     handleContinueAnimation(){
         document.getElementById("continueAnimation").style.display = "none"
         document.getElementById("pauseAnimation").style.display = "inline"
-        document.getElementById("+speed").style.display = "inline"
-        document.getElementById("-speed").style.display = "inline"
         this.toggleAnimationPause();
     }
     handlePauseAnimation(){
         document.getElementById("continueAnimation").style.display = "inline"
         document.getElementById("pauseAnimation").style.display = "none"
-        document.getElementById("+speed").style.display = "none"
-        document.getElementById("-speed").style.display = "none"
         this.toggleAnimationPause();
     }
     handleSkipforward(){
@@ -394,8 +356,6 @@ export default class App{
         document.getElementById("pauseAnimation").style.display = "none"
         document.getElementById("skipForward").style.display = "none"
         document.getElementById("startAnimation").style.display = "inline"
-        document.getElementById("+speed").style.display = "none"
-        document.getElementById("-speed").style.display = "none"
         this.skipAnimation();
     }
 
